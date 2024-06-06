@@ -1,5 +1,6 @@
 package com.chainsys.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,60 +9,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.model.Stock;
-import com.chainsys.model.User;
 import com.chainsys.util.DbConnection;
 
 public class StockImpl {
-	 private Connection con;
+	 private static final String CALL_BUY_STOCK_PROCEDURE = "{CALL buyStockProcedure(?, ?, ?, ?, ?)}";
+    private Connection con;
 
-	    public StockImpl() throws ClassNotFoundException, SQLException {
-	        this.con = DbConnection.getConnection();
-	    }
-	
-	 public List<Stock> selectAllStocks() {
-	        List<Stock> stocks = new ArrayList<>();
-            String sql ="select stock_id,symbol, company_name, current_stock_price, cap_category from stocks ";
+    public StockImpl() throws ClassNotFoundException, SQLException {
+        this.con = DbConnection.getConnection();
+    }
 
-	        try (
-	             PreparedStatement preparedStatement = con.prepareStatement(sql);) {
-	            ResultSet rs = preparedStatement.executeQuery();
-	            while (rs.next()) {
-	                int stockId = rs.getInt("stock_id");
-	                String symbol = rs.getString("symbol");
-	                String companyName = rs.getString("company_name");
-	                double currentStockPrice = rs.getDouble("current_stock_price");
-	                String capCategory = rs.getString("cap_category");
-	                stocks.add(new Stock(stockId, symbol, companyName, currentStockPrice, capCategory));
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return stocks;
-	    }
-	 public Stock getStockDetailsById(int id) {
-		  String sql = "select stock_id, symbol, company_name, current_stock_price, cap_category from stocks where stock_id=?";
+    public List<Stock> selectAllStocks() {
+        List<Stock> stocks = new ArrayList<>();
+        String sql = "SELECT stock_id, symbol, company_name, current_stock_price, cap_category FROM stocks";
 
-		  try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-		    pstmt.setInt(1, id); // Use setInt for integer values
+        try (PreparedStatement preparedStatement = con.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+            while (rs.next()) {
+                int stockId = rs.getInt("stock_id");
+                String symbol = rs.getString("symbol");
+                String companyName = rs.getString("company_name");
+                double currentStockPrice = rs.getDouble("current_stock_price");
+                String capCategory = rs.getString("cap_category");
+                stocks.add(new Stock(stockId, symbol, companyName, currentStockPrice, capCategory));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stocks;
+    }
 
-		    try (ResultSet rs = pstmt.executeQuery()) {
-		      if (rs.next()) {
-		        int stockId = rs.getInt("stock_id");
-		        String symbol = rs.getString("symbol");
-		        String companyName = rs.getString("company_name");
-		        double currentStockPrice = rs.getDouble("current_stock_price");
-		        String capCategory = rs.getString("cap_category");
+    public Stock getStockDetailsById(int id) {
+        String sql = "SELECT stock_id, symbol, company_name, current_stock_price, cap_category FROM stocks WHERE stock_id = ?";
 
-		        // Create a Stock object using the retrieved data
-		        Stock stock = new Stock(stockId, symbol, companyName, currentStockPrice, capCategory);
-		        return stock;
-		      }
-		    }
-		  } catch (SQLException e) {
-		    // Handle SQL exceptions appropriately (e.g., logging, throwing a custom exception)
-		    e.printStackTrace();
-		  }
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
 
-		  return null;
-		}
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int stockId = rs.getInt("stock_id");
+                    String symbol = rs.getString("symbol");
+                    String companyName = rs.getString("company_name");
+                    double currentStockPrice = rs.getDouble("current_stock_price");
+                    String capCategory = rs.getString("cap_category");
+                    return new Stock(stockId, symbol, companyName, currentStockPrice, capCategory);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+   
+
+    public int buyStock(int userId, int stockId, int quantity, double price) {
+        int result = 0;
+
+        try (CallableStatement callableStatement = con.prepareCall(CALL_BUY_STOCK_PROCEDURE)) {
+            callableStatement.setInt(1, userId);
+            callableStatement.setInt(2, stockId);
+            callableStatement.setInt(3, quantity);
+            callableStatement.setDouble(4, price);
+            callableStatement.registerOutParameter(5, java.sql.Types.INTEGER);
+
+            callableStatement.execute();
+            result = callableStatement.getInt(5);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

@@ -3,7 +3,7 @@
   <display-name>trading app</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
-    <welcome-file>register.jsp</welcome-file>
+    <welcome-file>home.jsp</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.jsp</welcome-file>

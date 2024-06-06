@@ -241,7 +241,11 @@
             
             </div>
             <div class="col-sm-12 d-flex justify-content-end mb-2">
-              <button class="btn  btn-primary btnEditNominee" data-id="<%= nominee.getNomineeId() %>">Edit</button>
+      <button class="btn btn-primary btnEditNominee"
+              data-id="<%= nominee.getNomineeId() %>"
+              data-name="<%= nominee.getNomineeName() %>"
+              data-relationship="<%= nominee.getRelationship() %>"
+              data-phone="<%= nominee.getPhoneno() %>">Edit</button>
               <button class="btn btn-danger  ms-1 btnDeleteNominee" data-id="<%= nominee.getNomineeId() %>">Delete</button>
                      
                </div>      
@@ -349,22 +353,23 @@
 
     </div>
   </section>
+
 <!-- Edit Nominee Form -->
-<div class="form-popup-bg" id="editNomineePopup">
+<div class="form-popup-bg" id="editNomineePopup" style="display: none;">
   <div class="form-container">
     <span class="close-button" id="btnCloseEditNomineeForm">&times;</span>
     <h1>Edit Nominee</h1>
     <form id="editNomineeForm" action="NomineeServlet" method="post">
       <input type="hidden" name="action" value="update">
-      <input type="hidden" name="nomineeId" id="nomineeId" value=>
+      <input type="hidden" name="nomineeId" id="editNomineeId">
       <input type="hidden" name="userId" value="<%= user.getId() %>">
       <div class="form-group">
         <label for="editNomineeName">Nominee Name:</label>
         <input type="text" id="editNomineeName" name="nomineeName" class="form-control" required>
       </div>
       <div class="form-group">
-        <label for="relationship">Relationship:</label>
-        <select id="relationship" name="relationship" class="form-control" required>
+        <label for="editRelationship">Relationship:</label>
+        <select id="editRelationship" name="relationship" class="form-control" required>
           <option value="">Select Relationship</option>
           <option value="Spouse">Spouse</option>
           <option value="Parent">Parent</option>
@@ -398,6 +403,30 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('.btnEditNominee').on('click', function() {
+    var nomineeId = $(this).data('id');
+    var nomineeName = $(this).data('name');
+    var relationship = $(this).data('relationship');
+    var phone = $(this).data('phone');
+
+    // Populate the form fields
+    $('#editNomineeId').val(nomineeId);
+    $('#editNomineeName').val(nomineeName);
+    $('#editRelationship').val(relationship);
+    $('#editPhone').val(phone);
+
+    // Show the form
+    $('#editNomineePopup').show();
+  });
+
+  $('#btnCloseEditNomineeForm').on('click', function() {
+    $('#editNomineePopup').hide();
+  });
+});
+</script>
 <script>
 
   document.getElementById('btnOpenNomineeForm').addEventListener('click', function() {

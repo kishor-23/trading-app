@@ -49,7 +49,7 @@
         <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0 d-flex justify-content-between align-items-center w-100">
                 <div class="breadcrumb-items d-flex align-items-center">
-                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Stock details</li>
                 </div>
                 <div class="logo d-flex align-items-center">
@@ -163,7 +163,7 @@
                     </div>
                      <div class="form-group mb-3">
                         <label for="userid" class="font-weight-bold">userid</label>
-                        <input type="number" class="form-control" id="userid" name="userid" readonly>
+                        <input type="number" class="form-control" id="userid" value=<%=user.getId() %> name="userid" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="stockPrice" class="font-weight-bold">Current Price</label>
