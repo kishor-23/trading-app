@@ -6,9 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    
     <!-- favicon -->
     <link rel="icon" href="assets/favicon.svg" type="image/x-icon">
-    <link rel="stylesheet" href="style/navbar.css">
+  <link rel="stylesheet" href="style/navbar.css"> 
       <link rel="stylesheet" href="style/home.css">
     
     <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -23,7 +25,7 @@
     </style>
     <header>
         <div style="display: flex; justify-content: center; font-size:2px">
-           <a href="profile.jsp" style="color: black;"><div class="logo"><img src="assets/favicon.svg" width="32" height="32" alt="Cryptex logo"><p> ChainTrade </p></div>
+           <a href="NomineeServlet?action=list" style="color: black;"><div class="logo"><img src="assets/favicon.svg" width="32" height="32" alt="Cryptex logo"><p> ChainTrade </p></div>
        
            </a>  </div>
         <div class="hamburger">
@@ -45,7 +47,7 @@
                 
                 
                 %>
-                 <li><a href="profile.jsp" style="background-color: blue; color: white;" >profile</a></li>
+                 <li><a href="NomineeServlet?action=list" style="background-color: blue; color: white;" >profile</a></li>
                  <%} %>
             </ul>
         </nav>
@@ -177,29 +179,25 @@
   
   
 
-<div class="footer-top active snipcss-MEiAJ" data-section="">
+<div class="footer-top active " data-section="">
   <div class="container">
       <div class="footer-brand">
           <a href="#" class="logo">
               <img src="https://codewithsadee.github.io/cryptex/assets/images/logo.svg" width="50" height="50" alt="Cryptex logo"> ChainTrade </a>
-          <h2 class="footer-title">Let's talk! </h2>
+          <h2 class="footer-title">Let's talk! <i class="fa-solid fa-thumbs-up"></i> </h2>
           <a href="tel:+123456789101" class="footer-contact-link">+12 345 678 9101</a>
           <a href="mailto:hello.cryptex@gmail.com" class="footer-contact-link">hello.chaintrade@gmail.com</a>
-          <address class="footer-contact-link"> ELCOT - Vadapalanji, Plot No 2, opposite MKU - Thirunagar Road, Madurai, Tamil Nadu 625021 </address>
+          <address class="footer-contact-link"> ELCOT - Vadapalanji, Plot No 2, opposite MKU , Madurai</address>
       </div>
       <ul class="footer-list">
           <li>
               <p class="footer-list-title">Products</p>
           </li>
-          <li>
-              <a href="#" class="footer-link">Spot</a>
-          </li>
+        
           <li>
               <a href="#" class="footer-link">Inverse Perpetual</a>
           </li>
-          <li>
-              <a href="#" class="footer-link">USDT Perpetual</a>
-          </li>
+        
           <li>
               <a href="#" class="footer-link">Exchange</a>
           </li>
@@ -223,12 +221,7 @@
           <li>
               <a href="#" class="footer-link">Tranding Fee</a>
           </li>
-          <li>
-              <a href="#" class="footer-link">Affiliate Program</a>
-          </li>
-          <li>
-              <a href="#" class="footer-link">Referral Program</a>
-          </li>
+     
           <li>
               <a href="#" class="footer-link">API</a>
           </li>
@@ -237,18 +230,14 @@
           <li>
               <p class="footer-list-title">Support</p>
           </li>
-          <li>
-              <a href="#" class="footer-link">Bybit Learn</a>
-          </li>
+        
           <li>
               <a href="#" class="footer-link">Help Center</a>
           </li>
           <li>
               <a href="#" class="footer-link">User Feedback</a>
           </li>
-          <li>
-              <a href="#" class="footer-link">Submit a request</a>
-          </li>
+
           <li>
               <a href="#" class="footer-link">API Documentation</a>
           </li>
@@ -269,9 +258,7 @@
           <li>
               <a href="#" class="footer-link">Careers</a>
           </li>
-          <li>
-              <a href="#" class="footer-link">Business Contacts</a>
-          </li>
+      
           <li>
               <a href="#" class="footer-link">Blog</a>
           </li>
@@ -279,6 +266,46 @@
   </div>
   
 </div>
+<!-- Facebook -->
+<i class="fab fa-facebook-f"></i>
 
+<!-- Twitter -->
+<i class="fab fa-twitter"></i>
+
+<!-- Google -->
+<i class="fab fa-google"></i>
+
+<!-- Instagram -->
+<i class="fab fa-instagram"></i>
+
+<!-- Linkedin -->
+<i class="fab fa-linkedin-in"></i>
+
+<!-- Pinterest -->
+<i class="fab fa-pinterest"></i>
+
+<!-- Vkontakte -->
+<i class="fab fa-vk"></i>
+
+<!-- Stack overflow -->
+<i class="fab fa-stack-overflow"></i>
+
+<!-- Youtube -->
+<i class="fab fa-youtube"></i>
+
+<!-- Slack -->
+<i class="fab fa-slack-hash"></i>
+
+<!-- Github -->
+<i class="fab fa-github"></i>
+
+<!-- Dribbble -->
+<i class="fab fa-dribbble"></i>
+
+<!-- Reddit -->
+<i class="fab fa-reddit-alien"></i>
+
+<!-- Whatsapp -->
+<i class="fab fa-whatsapp"></i>
 </body>
 </html>

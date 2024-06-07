@@ -23,6 +23,43 @@
   <link rel="icon" href="assets/favicon.svg" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
+  /* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Popup Content */
+.popup-content {
+  position: relative;
+  margin: auto;
+  width: 80%;
+  padding-top:20px;
+  max-width: 600px;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* Custom scrollbar design */
+::-webkit-scrollbar {
+  width: 0;
+}
+  
     .form-popup-bg, .form-popup-bg-add-money, .modal {
       display: none;
       position: fixed;
@@ -118,12 +155,12 @@
           <div class="card mb-4">
             <div class="card-body text-center">
               <% if (user.getProfilePicture() != null) { %>
-                <img src="ProfilePictureServlet?userId=<%= user.getId() %>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                <img id="profileImage" src="ProfilePictureServlet?userId=<%= user.getId() %>" onclick="openProfilePicturePopup()"  alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
               <% } else { %>
-                <img src="assets/default-user-image.jpg" alt="Default Avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                <img src="assets/default-user-image.jpg"  onclick="openProfilePicturePopup()" alt="Default Avatar" class="rounded-circle img-fluid" style="width: 150px;">
               <% } %>
               <h5 class="my-3"><%= user.getName() %></h5>
-              <a href="StockServlet">stocks</a>
+             
               <div class="d-flex justify-content-center mb-2">
                 <a class="btn btn-primary" href="LogoutServlet">Logout</a>
                 <button id="btnUpdateProfilePicture" class="btn btn-outline-primary ms-1">Update Profile Picture</button>
@@ -132,20 +169,58 @@
           </div>
           <div class="card mb-4 mb-lg-0">
             <div class="card-body p-1">
-              <p style="padding-left: 16px;">Wallet</p>
-              <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+              <p style="padding-left: 16px; padding-top:15px;">Wallet</p>
+              <div class="d-flex justify-content-between align-items-center p-3 ">
                 <p class="mb-0">Total Balance</p>
                 <p class="mb-0">$ <%= user.getBalance() %></p>
                 <button id="btnOpenAddMoneyForm">Add Money</button>
               </div>
-              <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+              <!-- <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
                 <p class="mb-0">Invested</p>
                 <p class="mb-0">$ 500</p>
                 <button>Withdraw</button>
               </div>
-            </div>
+ -->            </div>
           </div>
+          
+         <div style=" margin-top:5px">
+         
+         
+  <div class="card mt-2 mb-5 mb-lg-0  " style="height: 200px; overflow-y: auto;">
+   <p  class="mb-0 "style="padding-left: 16px; padding-top:15px;">orders</p>
+    <div class="card-body p-1">
+     
+      <div class="d-flex justify-content-between align-items-center p-3 ">
+        <p class="mb-0 ">company</p>
+        <p class="mb-0">Quantity</p>
+        <p class="mb-0">total</p>
+        <p class="mb-0">type</p>
+      </div>
+      <div class="d-flex justify-content-between align-items-center p-3 ">
+        <p class="mb-0 ">Apple</p>
+        <p class="mb-0"> 1</p>
+        <p class="mb-0"> $<%= user.getBalance() %></p>
+        <p class="mb-1">buy</p>
+      </div>
+       <div class="d-flex justify-content-between align-items-center p-3 ">
+        <p class="mb-0 ">Apple</p>
+        <p class="mb-0"> 1</p>
+        <p class="mb-0"> $<%= user.getBalance() %></p>
+        <p class="mb-1">buy</p>
+      </div>
+       <div class="d-flex justify-content-between align-items-center p-3 ">
+        <p class="mb-0 ">Apple</p>
+        <p class="mb-0"> 1</p>
+        <p class="mb-0"> $<%= user.getBalance() %></p>
+        <p class="mb-1">buy</p>
+      </div>
+    </div>
+  </div>
+</div>
+          
+          
         </div>
+        
         <div class="col-lg-8">
           <div class="card mb-4">
             <div class="card-body">
@@ -261,7 +336,8 @@
     <div class="col-md-6">
               <div class="card mb-4 mb-md-0">
                 <div class="card-body">
-                <a >  <p class="mb-4"><span class="text-primary font-italic me-1">Stock</span> Investment details
+                <a href="StockServlet"style="text-decoration:none;  color: inherit;
+  text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Stock</span> Investment details
                   </p></a>
                   <p class="mb-1" style="font-size: .77rem;">Small cap</p>
                   <div class="progress rounded" style="height: 5px;">
@@ -284,6 +360,7 @@
               </div>
             </div>
 </div>
+
 
 
       <!-- Update Profile Picture Form -->
@@ -402,7 +479,13 @@
     </form>
   </div>
 </div>
-
+<!-- Profile Picture Popup -->
+<div id="profilePicturePopup" class="popup">
+  <div class="popup-content">
+    <img id="profilePictureImg" src="ProfilePictureServlet?userId=<%= user.getId() %>" alt="Profile Picture" class="rounded-circle img-fluid">
+    <span class="close" onclick="closeProfilePicturePopup()">&times;</span>
+  </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -516,6 +599,19 @@ $(document).ready(function() {
     document.getElementById('btnCloseAddMoneyForm').addEventListener('click', function() {
       document.getElementById('addMoneyPopup').style.display = 'none';
     });
+ // Open Profile Picture Popup
+    function openProfilePicturePopup() {
+      var profilePicturePopup = document.getElementById("profilePicturePopup");
+      var profilePictureImg = document.getElementById("profilePictureImg");
+      profilePictureImg.src = "ProfilePictureServlet?userId=<%= user.getId() %>"; // Set the source of the profile picture
+      profilePicturePopup.style.display = "block";
+    }
+
+    // Close Profile Picture Popup
+    function closeProfilePicturePopup() {
+      var profilePicturePopup = document.getElementById("profilePicturePopup");
+      profilePicturePopup.style.display = "none";
+    }
   </script>
 </body>
 </html>

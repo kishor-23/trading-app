@@ -52,10 +52,12 @@
                     <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Stock details</li>
                 </div>
-                <div class="logo d-flex align-items-center">
-                    <img src="assets/favicon.svg" width="32" height="32" alt="Chaintrade logo">
-                    <p class="mb-0 ms-2">ChainTrade</p>
-                </div>
+                <a href="NomineeServlet?action=list">
+                    <div class="logo d-flex align-items-center">
+                        <img src="assets/favicon.svg" width="32" height="32" alt="Chaintrade logo">
+                        <p class="mb-0 ms-2">ChainTrade</p>
+                    </div>
+                </a>
             </ol>
         </nav>
     </div>
@@ -97,26 +99,45 @@
                         if (listStocks != null) {
                             for (Stock stock : listStocks) {
                     %>
-                    <tr>
-                        <td><%= stock.getSymbol() %></td>
-                        <td><%= stock.getCompanyName() %></td>
-                        <td><%= stock.getCurrentStockPrice() %></td>
-                        <td><%= stock.getCapCategory() %></td>
-                        <td>
-                            <form action="StockDetailServlet" method="post">
-                                <input type="hidden" value="<%= stock.getSymbol() %>" name="symbol">
-                                <button type="submit" class="btn btn-primary">View</button>
-                            </form>
-                        </td>
-                        <td>
-                            <button class="btn btn-success" data-toggle="modal" data-target="#buyModal" 
-                                    data-symbol="<%= stock.getSymbol() %>" 
-                                    data-price="<%= stock.getCurrentStockPrice() %>"
-                                    data-stock-id="<%= stock.getStockId() %>">
-                                Buy
-                            </button>
-                        </td>
-                    </tr>
+                    
+                   <script>
+function redirectToStockDetail(symbol) {
+    window.location.href = 'StockDetailServlet?symbol=' + symbol;
+}
+</script>
+<%-- The table row --%>
+<tr>
+    <td><%= stock.getSymbol() %></td>
+    <td><%= stock.getCompanyName() %></td>
+    <td><%= stock.getCurrentStockPrice() %></td>
+    <td><%= stock.getCapCategory() %></td>
+    <%-- <td>
+        <form action="StockDetailServlet" method="post">
+            <input type="hidden" value="<%= stock.getSymbol() %>" name="symbol">
+            <button type="submit" class="btn btn-primary">View</button>
+        </form>
+    </td> --%>
+    <td>
+        <button class="btn btn-success" data-toggle="modal" data-target="#buyModal" 
+                data-symbol="<%= stock.getSymbol() %>" 
+                data-price="<%= stock.getCurrentStockPrice() %>"
+                data-stock-id="<%= stock.getStockId() %>">
+            Buy
+        </button>
+    </td>
+    <td>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#sellModal" 
+                data-symbol="<%= stock.getSymbol() %>" 
+                data-price="<%= stock.getCurrentStockPrice() %>"
+                data-stock-id="<%= stock.getStockId() %>">
+            Sell
+        </button>
+    </td>
+    <td>
+        <a href="#" class="btn btn-primary view-stock-btn" onclick="redirectToStockDetail('<%= stock.getSymbol() %>')">View</a>
+    </td>
+</tr>
+
                     <%
                             }
                         }
@@ -158,12 +179,11 @@
                         <input type="text" class="form-control" id="stockSymbol" name="symbol" readonly>
                     </div>
                     <div class="form-group mb-3">
-                      <!--   <label for="stockId" class="font-weight-bold">Stock ID</label> -->
                         <input type="hidden" class="form-control" id="stockId" name="stockId" readonly>
                     </div>
-                     <div class="form-group mb-3">
-                        <label for="userid" class="font-weight-bold">userid</label>
-                        <input type="number" class="form-control" id="userid" value=<%=user.getId() %> name="userid" readonly>
+                    <div class="form-group mb-3">
+                        <label for="userid" class="font-weight-bold">User ID</label>
+                        <input type="number" class="form-control" id="userid" value="<%= user.getId() %>" name="userid" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="stockPrice" class="font-weight-bold">Current Price</label>
@@ -187,7 +207,50 @@
     </div>
 </div>
 
-
+<!-- Sell Modal -->
+<div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="SellStockServlet" method="post">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="sellModalLabel">Sell Stock</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="sellStockSymbol" class="font-weight-bold">Stock Symbol</label>
+                        <input type="text" class="form-control" id="sellStockSymbol" name="symbol" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="hidden" class="form-control" id="sellStockId" name="stockId" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="sellUserId" class="font-weight-bold">User ID</label>
+                        <input type="number" class="form-control" id="sellUserId" value="<%= user.getId() %>" name="userid" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="sellStockPrice" class="font-weight-bold">Current Price</label>
+                        <input type="text" class="form-control" id="sellStockPrice" name="price" readonly>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="sellQuantity" class="font-weight-bold">Quantity</label>
+                        <input type="number" class="form-control" id="sellQuantity" name="quantity" min="1" max="10" value="1" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="sellTotalPrice" class="font-weight-bold">Total Price</label>
+                        <input type="text" class="form-control" id="sellTotalPrice" name="totalPrice" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Sell</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -218,27 +281,48 @@ document.getElementById('priceHeader').addEventListener('click', function() {
     let sortIcon = document.getElementById('priceSortIcon');
     sortIcon.innerHTML = sortOrder ? '▲' : '▼';
 });
-//Handle Buy Button Click
+
+// Handle Buy Button Click
 $('#buyModal').on('show.bs.modal', function (event) {
     let button = $(event.relatedTarget);
     let symbol = button.data('symbol');
     let price = button.data('price');
-    let stockId = button.data('stock-id'); // Corrected variable name
+    let stockId = button.data('stock-id');
     let modal = $(this);
     modal.find('.modal-body #stockSymbol').val(symbol);
     modal.find('.modal-body #stockPrice').val(price);
     modal.find('.modal-body #quantity').val(1);
     modal.find('.modal-body #totalPrice').val(price);
-    modal.find('.modal-body #stockId').val(stockId); // Corrected the selector and variable name
+    modal.find('.modal-body #stockId').val(stockId);
 });
 
-// Update Total Price when Quantity Changes
+// Handle Sell Button Click
+$('#sellModal').on('show.bs.modal', function (event) {
+    let button = $(event.relatedTarget);
+    let symbol = button.data('symbol');
+    let price = button.data('price');
+    let stockId = button.data('stock-id');
+    let modal = $(this);
+    modal.find('.modal-body #sellStockSymbol').val(symbol);
+    modal.find('.modal-body #sellStockPrice').val(price);
+    modal.find('.modal-body #sellQuantity').val(1);
+    modal.find('.modal-body #sellTotalPrice').val(price);
+    modal.find('.modal-body #sellStockId').val(stockId);
+});
+
+// Update Total Price when Buy Quantity Changes
 document.getElementById('quantity').addEventListener('input', function() {
     let price = parseFloat(document.getElementById('stockPrice').value) || 0;
     let quantity = parseInt(this.value) || 1;
     document.getElementById('totalPrice').value = (price * quantity).toFixed(2);
 });
 
+// Update Total Price when Sell Quantity Changes
+document.getElementById('sellQuantity').addEventListener('input', function() {
+    let price = parseFloat(document.getElementById('sellStockPrice').value) || 0;
+    let quantity = parseInt(this.value) || 1;
+    document.getElementById('sellTotalPrice').value = (price * quantity).toFixed(2);
+});
 </script>
 </body>
 </html>

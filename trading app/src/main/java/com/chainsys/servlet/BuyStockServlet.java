@@ -14,7 +14,7 @@ import com.chainsys.impl.StockImpl;
 public class BuyStockServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private  StockImpl stockDAO;
-
+@Override
     public void init() {
         try {
 			stockDAO = new StockImpl();
@@ -23,7 +23,7 @@ public class BuyStockServlet extends HttpServlet {
 			e.printStackTrace();
 		}
     }
-
+@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("userid"));
