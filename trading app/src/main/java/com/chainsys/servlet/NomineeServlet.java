@@ -75,9 +75,13 @@ public class NomineeServlet extends HttpServlet {
     }
 
     private void listNominees(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException, ClassNotFoundException {
-//        int userId = Integer.parseInt(request.getParameter("userId"));
+
     	 HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
+        if(user==null) {
+        	  response.sendRedirect("login.jsp");
+              return;
+        }
      	 User updatedUser = userOperations.getUserByEmail(user.getEmail());
       	
         List<Nominee> listNominees = nomineeImpl.getAllNomineesByUserId(user.getId());

@@ -1,5 +1,4 @@
 package com.chainsys.servlet;
-
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.Date;
@@ -19,6 +18,7 @@ import java.io.InputStream;
 import com.chainsys.dao.UserDAO;
 import com.chainsys.impl.UserImpl;
 import com.chainsys.model.User;
+import com.chainsys.util.PasswordHashing; // Import PasswordHashing class
 
 @WebServlet("/RegisterServlet")
 @MultipartConfig
@@ -66,7 +66,11 @@ public class RegisterServlet extends HttpServlet {
         }
 
         double balance = 100.00;
-        User user = new User(username, email, pancardno, phone, dob, password, profilePicture, balance);
+        
+        // Hash the password before storing
+        String hashedPassword = PasswordHashing.hashPassword(password);
+        
+        User user = new User(username, email, pancardno, phone, dob, hashedPassword, profilePicture, balance);
         
         try {
             boolean userExists = userOperations.checkUserAleardyExists(email);

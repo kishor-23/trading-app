@@ -1,5 +1,9 @@
 package com.chainsys.impl;
 
+import com.chainsys.dao.StockDAO;
+import com.chainsys.model.Stock;
+import com.chainsys.util.DbConnection;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,17 +12,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chainsys.model.Stock;
-import com.chainsys.util.DbConnection;
-
-public class StockImpl {
-	 private static final String CALL_BUY_STOCK_PROCEDURE = "{CALL buyStockProcedure(?, ?, ?, ?, ?)}";
+public class StockImpl implements StockDAO {
+    private static final String CALL_BUY_STOCK_PROCEDURE = "{CALL buyStockProcedure(?, ?, ?, ?, ?)}";
+    private static final String CALL_SELL_STOCK_PROCEDURE = "{CALL sellStockProcedure(?, ?, ?, ?, ?, ?)}";
     private Connection con;
 
-    public StockImpl() throws ClassNotFoundException, SQLException {
-        this.con = DbConnection.getConnection();
+    public StockImpl() {
+        try {
+            this.con = DbConnection.getConnection();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            // Handle exception appropriately
+        }
     }
 
+    @Override
     public List<Stock> selectAllStocks() {
         List<Stock> stocks = new ArrayList<>();
         String sql = "SELECT stock_id, symbol, company_name, current_stock_price, cap_category FROM stocks";
@@ -35,10 +43,12 @@ public class StockImpl {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle exception appropriately
         }
         return stocks;
     }
 
+    @Override
     public Stock getStockDetailsById(int id) {
         String sql = "SELECT stock_id, symbol, company_name, current_stock_price, cap_category FROM stocks WHERE stock_id = ?";
 
@@ -57,12 +67,12 @@ public class StockImpl {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle exception appropriately
         }
         return null;
     }
 
-   
-
+    @Override
     public int buyStock(int userId, int stockId, int quantity, double price) {
         int result = 0;
 
@@ -77,6 +87,31 @@ public class StockImpl {
             result = callableStatement.getInt(5);
         } catch (SQLException e) {
             e.printStackTrace();
+            // Handle exception appropriately
+        }
+
+        return result;
+    }
+
+    @Override
+    public int sellStock(int userId, int stockId, int quantity, double price) {
+        int result = 0;
+
+        try (CallableStatement callableStatement = con.prepareCall(CALL_SELL_STOCK_PROCEDURE)) {
+            callableStatement.setInt(1, userId);
+            callableStatement.setInt(2, stockId);
+            callableStatement.setInt(3, quantity);
+            callableStatement.setDouble(4, price);
+            callableStatement.registerOutParameter(5, java.sql.Types.INTEGER);
+            callableStatement.registerOutParameter(6, java.sql.Types.DECIMAL); // To get the profit/loss
+
+            callableStatement.execute();
+            result = callableStatement.getInt(5);
+            double profitLoss = callableStatement.getDouble(6);
+            // Handle profitLoss if needed
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception appropriately
         }
 
         return result;

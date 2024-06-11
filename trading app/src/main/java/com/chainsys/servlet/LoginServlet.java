@@ -19,61 +19,52 @@ import com.chainsys.impl.NomineeImpl;
 import com.chainsys.impl.UserImpl;
 import com.chainsys.model.Nominee;
 import com.chainsys.model.User;
+import com.chainsys.util.PasswordHashing; // Import PasswordHashing class
 
 
 @WebServlet("/LoginServlet")
 //@MultipartConfig
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	 private UserDAO userOperations;
+    private static final long serialVersionUID = 1L;
+    private UserDAO userOperations;
 
-	    public LoginServlet() {
-	        super();
-	        try {
-	            userOperations = new UserImpl();
-	        } catch (ClassNotFoundException | SQLException e) {
-	            e.printStackTrace();
-	            throw new RuntimeException("Database connection failed");
-	        }
-	    }
+    public LoginServlet() {
+        super();
+        try {
+            userOperations = new UserImpl();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Database connection failed");
+        }
+    }
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		  String email = request.getParameter("email");
-	        String password = request.getParameter("password");
+        try {
+            User user = userOperations.getUserByEmail(email);
 
-	        try {
-	            User user = userOperations.getUserByEmailAndPassword(email, password);
-	            
-	            if (user != null) {
-	                HttpSession session = request.getSession();
-	                System.out.println(user.getName());
-	                session.setAttribute("user", user);
-	                System.out.println(user.toString());
-	                NomineeDAO nomineeDAO = new NomineeImpl();
-	                List<Nominee> listNominees = null;
-	                try {
-	                    listNominees = nomineeDAO.getAllNomineesByUserId(user.getId());
-	                } catch (SQLException e) {
-	                    throw new ServletException(e);
-	                }
-	                
-//	                request.setAttribute("listNominees", listNominees);
-	                response.sendRedirect("NomineeServlet?action=list");
-	            } else {
-	            	if(userOperations.checkUserAleardyExists(email)) {
-	            		response.sendRedirect("login.jsp?msg=1");
-	            	}
-	            	else {
-	            		response.sendRedirect("login.jsp?msg=2");
+            if (user != null && PasswordHashing.checkPassword(password, user.getPassword())) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
 
-	            	}
-	                
-	            }
-	        } catch (SQLException | ClassNotFoundException e) {
-	            e.printStackTrace();
-	            response.sendRedirect("login.jsp?msg=An error occurred. Please try again later.");
-	        }
-	}
+                NomineeDAO nomineeDAO = new NomineeImpl();
+                List<Nominee> listNominees = null;
+                try {
+                    listNominees = nomineeDAO.getAllNomineesByUserId(user.getId());
+                } catch (SQLException e) {
+                    throw new ServletException(e);
+                }
+
+                response.sendRedirect("NomineeServlet?action=list");
+            } else {
+                response.sendRedirect("login.jsp?msg=Invalid email or password");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            response.sendRedirect("login.jsp?msg=An error occurred. Please try again later.");
+        }
+    }
 
 }

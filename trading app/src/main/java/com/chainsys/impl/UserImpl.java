@@ -87,7 +87,7 @@ public class UserImpl implements UserDAO {
 
 		}
 	    public User  getUserByEmail(String email) throws ClassNotFoundException, SQLException{
-	    	 String selectQuery = "SELECT id, name, email, pancardno, phone, dob, profilePicture, balance FROM users WHERE email = ? ";
+	    	 String selectQuery = "SELECT id, name, email, pancardno, phone, dob, profilePicture,password ,balance FROM users WHERE email = ? ";
 		        try (PreparedStatement pstmt = con.prepareStatement(selectQuery)) {
 		            pstmt.setString(1, email);
 		            
@@ -103,6 +103,7 @@ public class UserImpl implements UserDAO {
 		                    // Assuming profilePicture is a Blob
 		                    user.setProfilePicture(rs.getBlob("profilePicture"));
 		                    user.setBalance(rs.getDouble("balance"));
+		                    user.setPassword(rs.getString("password"));
 		                    return user;
 		                }
 		            }

@@ -24,8 +24,8 @@
 }
     </style>
     <header>
-        <div style="display: flex; justify-content: center; font-size:2px">
-           <a href="NomineeServlet?action=list" style="color: black;"><div class="logo"><img src="assets/favicon.svg" width="32" height="32" alt="Cryptex logo"><p> ChainTrade </p></div>
+        <div style="display: flex; justify-content: center; font-size:3px">
+           <a href="NomineeServlet?action=list" style="color: black;"><div class="logo"><img src="assets/favicon.svg" width="32" height="32" alt="logo"><p> ChainTrade </p></div>
        
            </a>  </div>
         <div class="hamburger">
@@ -36,13 +36,13 @@
         <nav class="nav-bar">
             <ul>
                 <li><a href="#home" class="active">Home</a></li>
-                <li><a href="viewstocks.html" >live</a></li>
-                <li><a href="simulator.html" >Learn to trade</a></li>
+                <li><a href="LiveMarket.jsp" >Live</a></li>
+                <li><a href="learn_to_trade.jsp" >Learn to trade</a></li>
                 <%
         
     if (session == null || session.getAttribute("user") == null) {
     %>
-                <li><a href="register.jsp" style="background-color: blue; color: white;" >register</a></li>
+                <li><a href="register.jsp" style="background-color: blue; color: white;" >Register</a></li>
                 <% } else{
                 
                 
@@ -120,7 +120,8 @@
                 ["wipro", "BSE:WIPRO"],
                 ["l&t", "BSE:LT"],
                 ["Sensex","BSE:SENSEX"],
-                ["Nifty","NSE:NIFTY"]
+                ["Gold","GOLDBEES|1Y"],
+                ["NIDTYBEES","NIFTYBEES|1Y"]
             ],
             "chartOnly": false,
             "width": "100%",
@@ -183,7 +184,7 @@
   <div class="container">
       <div class="footer-brand">
           <a href="#" class="logo">
-              <img src="https://codewithsadee.github.io/cryptex/assets/images/logo.svg" width="50" height="50" alt="Cryptex logo"> ChainTrade </a>
+              <img src="https://codewithsadee.github.io/cryptex/assets/images/logo.svg" width="50" height="50" alt="logo"> ChainTrade </a>
           <h2 class="footer-title">Let's talk! <i class="fa-solid fa-thumbs-up"></i> </h2>
           <a href="tel:+123456789101" class="footer-contact-link">+12 345 678 9101</a>
           <a href="mailto:hello.cryptex@gmail.com" class="footer-contact-link">hello.chaintrade@gmail.com</a>
@@ -266,46 +267,5 @@
   </div>
   
 </div>
-<!-- Facebook -->
-<i class="fab fa-facebook-f"></i>
-
-<!-- Twitter -->
-<i class="fab fa-twitter"></i>
-
-<!-- Google -->
-<i class="fab fa-google"></i>
-
-<!-- Instagram -->
-<i class="fab fa-instagram"></i>
-
-<!-- Linkedin -->
-<i class="fab fa-linkedin-in"></i>
-
-<!-- Pinterest -->
-<i class="fab fa-pinterest"></i>
-
-<!-- Vkontakte -->
-<i class="fab fa-vk"></i>
-
-<!-- Stack overflow -->
-<i class="fab fa-stack-overflow"></i>
-
-<!-- Youtube -->
-<i class="fab fa-youtube"></i>
-
-<!-- Slack -->
-<i class="fab fa-slack-hash"></i>
-
-<!-- Github -->
-<i class="fab fa-github"></i>
-
-<!-- Dribbble -->
-<i class="fab fa-dribbble"></i>
-
-<!-- Reddit -->
-<i class="fab fa-reddit-alien"></i>
-
-<!-- Whatsapp -->
-<i class="fab fa-whatsapp"></i>
 </body>
 </html>

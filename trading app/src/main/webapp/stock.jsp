@@ -20,6 +20,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stock Table with Pagination</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
@@ -41,30 +42,63 @@
 .sort-icon {
     margin-left: 5px;
 }
+
+*, *:before, *:after {
+	box-sizing: border-box
+}
+
+* {
+	margin: 0
+}
+
+body {
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased
+}
+
+header[data-astro-cid-rafkve5z] {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	border-bottom: 1px solid #e0e3eb;
+	justify-content: space-between;
+	padding: 12px;
+	flex-direction: row;
+	z-index: 1
+}
+
+:root[data-theme=dark] header[data-astro-cid-rafkve5z] {
+	border-bottom: 1px solid #2a2e39
+}
 </style>
 </head>
 <body>
+<header data-astro-cid-rafkve5z>
+		<div class="d-flex justify-content-start">
+            <button onclick="window.history.back()" class="btn ">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+		
+          <div class="logo d-flex align-items-center">
+            <img src="assets/favicon.svg" width="32" height="32" alt="Chaintrade logo">
+            <a class="mb-0 ms-2" href="NomineeServlet?action=list" style="color: black; text-decoration: none !important;">ChainTrade</a>
+          </div>
+          
+        
+     
+    
+	</header>
+	<br>
 <div class="row">
-    <div class="col">
-        <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
-            <ol class="breadcrumb mb-0 d-flex justify-content-between align-items-center w-100">
-                <div class="breadcrumb-items d-flex align-items-center">
-                    <li class="breadcrumb-item"><a href="home.jsp">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Stock details</li>
-                </div>
-                <a href="NomineeServlet?action=list">
-                    <div class="logo d-flex align-items-center">
-                        <img src="assets/favicon.svg" width="32" height="32" alt="Chaintrade logo">
-                        <p class="mb-0 ms-2">ChainTrade</p>
-                    </div>
-                </a>
-            </ol>
-        </nav>
-    </div>
+    
     <div class="container">
         <div class="row mb-3">
             <div class="col-md-8 filter-buttons text-left">
                 <form method="get" action="StockServlet" id="filterForm">
+                <input type="hidden" name="sortField" id="sortField" value="<%= request.getParameter("sortField") %>">
+<input type="hidden" name="sortOrder" id="sortOrder" value="<%= request.getParameter("sortOrder") %>">
+                
                     <button type="submit" class="btn btn-primary" name="filterCategory" value="Small">Small Cap</button>
                     <button type="submit" class="btn btn-warning" name="filterCategory" value="Medium">Medium Cap</button>
                     <button type="submit" class="btn btn-success" name="filterCategory" value="Large">Large Cap</button>
@@ -75,7 +109,11 @@
                 <form method="get" action="StockServlet" id="searchForm">
                     <input type="hidden" name="filterCategory" value="<%= request.getAttribute("filterCategory") %>">
                     <input type="hidden" name="page" value="1">
+                    
                     <input type="hidden" name="itemsPerPage" value="<%= request.getAttribute("itemsPerPage") %>">
+                     <input type="hidden" name="sortField" value="<%= request.getParameter("sortField") %>">
+    <input type="hidden" name="sortOrder" value="<%= request.getParameter("sortOrder") %>">
+    
                     <input type="text" class="form-control" id="searchInput" name="searchQuery" value="<%= request.getAttribute("searchQuery") %>" placeholder="Search for stocks...">
                 </form>
             </div>
@@ -86,11 +124,13 @@
                     <tr>
                         <th>Symbol</th>
                         <th>Company Name</th>
-                        <th id="priceHeader" class="sortable">Current Stock Price
-                            <span id="priceSortIcon" class="sort-icon"></span>
-                        </th>
+                     <th id="priceHeader" class="sortable" onclick="sortTable('currentStockPrice')">Current Stock Price
+    <span id="priceSortIcon" class="sort-icon"></span>
+</th>
+
+
                         <th>Cap Category</th>
-                        <th colspan="2">Action</th>
+                        <th colspan="2">stocks</th>
                     </tr>
                 </thead>
                 <tbody id="stockTable">
@@ -100,43 +140,48 @@
                             for (Stock stock : listStocks) {
                     %>
                     
-                   <script>
-function redirectToStockDetail(symbol) {
-    window.location.href = 'StockDetailServlet?symbol=' + symbol;
-}
+ 
+ <script>
+ 
+ function redirectToStockDetail(symbol) {
+     window.location.href = 'StockDetailServlet?symbol=' + symbol;
+ }
+ function sortTable(field) {
+     let sortOrder = '<%= request.getParameter("sortOrder") %>';
+     // Toggle sort order
+     sortOrder = sortOrder === 'true' ? 'false' : 'true';
+     document.getElementById('sortField').value = field;
+
+     document.getElementById('sortOrder').value = sortOrder;
+     document.getElementById('filterForm').submit();
+ }
 </script>
+
+    
+
 <%-- The table row --%>
-<tr>
-    <td><%= stock.getSymbol() %></td>
-    <td><%= stock.getCompanyName() %></td>
-    <td><%= stock.getCurrentStockPrice() %></td>
-    <td><%= stock.getCapCategory() %></td>
-    <%-- <td>
-        <form action="StockDetailServlet" method="post">
-            <input type="hidden" value="<%= stock.getSymbol() %>" name="symbol">
-            <button type="submit" class="btn btn-primary">View</button>
-        </form>
-    </td> --%>
-    <td>
-        <button class="btn btn-success" data-toggle="modal" data-target="#buyModal" 
-                data-symbol="<%= stock.getSymbol() %>" 
-                data-price="<%= stock.getCurrentStockPrice() %>"
-                data-stock-id="<%= stock.getStockId() %>">
-            Buy
-        </button>
-    </td>
-    <td>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#sellModal" 
-                data-symbol="<%= stock.getSymbol() %>" 
-                data-price="<%= stock.getCurrentStockPrice() %>"
-                data-stock-id="<%= stock.getStockId() %>">
-            Sell
-        </button>
-    </td>
-    <td>
-        <a href="#" class="btn btn-primary view-stock-btn" onclick="redirectToStockDetail('<%= stock.getSymbol() %>')">View</a>
-    </td>
-</tr>
+  <tr class="clickable" >
+                <td onclick="redirectToStockDetail('<%= stock.getSymbol() %>')"><%= stock.getSymbol() %></td>
+                <td onclick="redirectToStockDetail('<%= stock.getSymbol() %>')"><%= stock.getCompanyName() %></td>
+                <td ><%= stock.getCurrentStockPrice() %></td>
+                <td><%= stock.getCapCategory() %></td>
+                <td>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#buyModal" 
+                            data-symbol="<%= stock.getSymbol() %>" 
+                            data-price="<%= stock.getCurrentStockPrice() %>"
+                            data-stock-id="<%= stock.getStockId() %>">
+                        Buy
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#sellModal" 
+                            data-symbol="<%= stock.getSymbol() %>" 
+                            data-price="<%= stock.getCurrentStockPrice() %>"
+                            data-stock-id="<%= stock.getStockId() %>">
+                        Sell
+                    </button>
+                </td>
+            </tr>
 
                     <%
                             }
@@ -166,7 +211,8 @@ function redirectToStockDetail(symbol) {
 <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="BuyStockServlet" method="post">
+            <form action="StockTransactionServlet" method="post">
+              <input type="hidden" name="transactionType" value="buy">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="buyModalLabel">Buy Stock</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -211,7 +257,9 @@ function redirectToStockDetail(symbol) {
 <div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="SellStockServlet" method="post">
+            <form action="StockTransactionServlet" method="post">
+            <input type="hidden" name="transactionType" value="sell">
+            
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="sellModalLabel">Sell Stock</h5>
                     <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
@@ -264,23 +312,9 @@ document.getElementById('searchInput').addEventListener('keyup', function() {
     }, 1000);
 });
 
-let sortOrder = true;
 
-document.getElementById('priceHeader').addEventListener('click', function() {
-    let table = document.getElementById('stockTable');
-    let rows = Array.from(table.getElementsByTagName('tr'));
-    rows.sort((a, b) => {
-        let priceA = parseFloat(a.cells[2].innerText) || 0;
-        let priceB = parseFloat(b.cells[2].innerText) || 0;
-        return sortOrder ? priceA - priceB : priceB - priceA;
-    });
-    sortOrder = !sortOrder;
-    rows.forEach(row => table.appendChild(row));
 
-    // Update sort icon
-    let sortIcon = document.getElementById('priceSortIcon');
-    sortIcon.innerHTML = sortOrder ? '▲' : '▼';
-});
+
 
 // Handle Buy Button Click
 $('#buyModal').on('show.bs.modal', function (event) {

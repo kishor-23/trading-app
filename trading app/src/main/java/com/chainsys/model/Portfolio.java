@@ -7,7 +7,16 @@ public class Portfolio {
     private int userId;
     private int stockId;
     private int quantity;
-    private BigDecimal buyedPrice;
+    private BigDecimal total;
+    public BigDecimal getTotal() {
+		return total;
+	}
+
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
+
+	private BigDecimal buyedPrice;
 
     // Getters and Setters
     public int getPortfolioId() {

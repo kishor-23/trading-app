@@ -10,9 +10,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
     <title>Stock Order</title>
 </head>
 <body>
+ <%
+        int userId = Integer.parseInt(request.getParameter("userid"));
+        int stockId = Integer.parseInt(request.getParameter("stockId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        String type= request.getParameter("transactionType");
+        StockImpl stockoperations = new StockImpl();
+        Stock stock = stockoperations.getStockDetailsById(stockId);
+
+        // Get the current date and time
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy, hh:mma");
+        String currentDateTime = formatter.format(date);
+        String boxClass = "box";
+        if ("sell".equalsIgnoreCase(type)) {
+            boxClass += " box-sell";
+        } else {
+            boxClass += " box-buy";
+        }
+    %>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,500;0,700;0,800;1,400;1,600&display=swap");
 
@@ -20,15 +42,20 @@
             padding: 0;
             margin: 0;
         }
-        .box {
-            width: 100%;
-            height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Poppins', sans-serif;
-            background-color: #1c38ec;
-        }
+         .box {
+        width: 100%;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins', sans-serif;
+    }
+    .box-buy {
+        background-color: #04aa6d;
+    }
+    .box-sell {
+        background-color: #ff4d4d;
+    }
         .orderContainer {
             display: flex;
             flex-direction: column;
@@ -56,10 +83,7 @@
             font-weight: 700;
             padding: 12px 16px 4px;
         }
-        hr {
-            width: 90%;
-            border: 1px solid #efefef;
-        }
+   
         .orderDetail {
             font-size: 1.1rem;
             font-weight: 500;
@@ -72,7 +96,7 @@
             padding: 12px 16px;
         }
         .orderSubDetail .code {
-            margin-right: 24px;
+            margin-left: 12px;
         }
         .qr-code {
             display: flex;
@@ -91,40 +115,41 @@
             to {transform: translateY(4px);}
         }
     </style>
-    <%
-        int userId = Integer.parseInt(request.getParameter("userid"));
-        int stockId = Integer.parseInt(request.getParameter("stockId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        StockImpl stockoperations = new StockImpl();
-        Stock stock = stockoperations.getStockDetailsById(stockId);
-
-        // Get the current date and time
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy, hh:mma");
-        String currentDateTime = formatter.format(date);
-    %>
-    <div class="box">
+   
+    <div class="<%= boxClass %>">
         <a onclick="window.print()">
             <div class="orderContainer">
                 <div class="order">
-                    <div class="orderTitle"><%= stock.getCompanyName() %></div>
-                    <hr>
+                    <div class="orderTitle border-bottom"><%= stock.getCompanyName() %></div>
+                
                     <div class="orderDetail">
-                        <div style="width: 300px; text-align: center;"> " You are now a shareholder of <%= stock.getCompanyName() %> "</div>
+                     <% if (type != null && type.equals("buy")) { %>
+                        <div style="width: 320px; text-align: center;align-item:center ; margin :auto" > " You are now a shareholder of <%= stock.getCompanyName() %> "</div>
+                        <%} %>
                         <div>Quantity: <%= quantity %></div>
                         <div class="code">Order Value: <%= price %></div>
-                        <div>NSE Order: ID1400000000012294</div>
+                  <!--       <div>NSE Order: ID1400000000012294</div> -->
                     </div>
                     <div class="qr-code">
                         <!-- Add QR code or any other images here if needed -->
                     </div>
-                    <p style="font-size: small; text-align: center;">Order placed on <%= currentDateTime %></p>
-                    <div class="orderSubDetail">
+                  
+                    <div class="orderSubDetail ">
+                    <% if (type != null && type.equals("buy")) { %>
+                    
                         <!-- Additional order details can be added here -->
+                      <div class="d-flex align-items-center flex-column"><p class="mx-2"> order type: </p> <p class="btn btn-success"> Buy </p> </div>
+                     <%}else{
+                    	 %>   
+                      <div class="d-flex align-items-center flex-column"><p class="mx-2"> order type: </p> <p class="btn btn-danger"> sell </p> </div>
+                      <%} %>
+                        <div class=""><p > payment status</p><p class="d-flex justify-content-end"style="color:green">Successful <p> </div> 
+                        
                     </div>
-                    <hr>
-                    <div class="orderDetail">
+                      <p style="font-size: small; text-align: center;">Order placed on <%= currentDateTime %></p>
+                    
+                    <div class="orderDetail border-top">
+                    
                         <div style="text-align: right;">Total Amount: rs. <%= price * quantity %></div>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ public class PortfolioServlet extends HttpServlet {
         try {
 			portfolioDAO = new PortfolioImpl();
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
     }
@@ -40,9 +40,6 @@ public class PortfolioServlet extends HttpServlet {
             case "view":
                 viewPortfolio(request, response);
                 break;
-            case "delete":
-                deletePortfolio(request, response);
-                break;
             case "list":
             default:
                 listPortfolios(request, response);
@@ -50,65 +47,6 @@ public class PortfolioServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "list";
-        }
-
-        switch (action) {
-            case "add":
-                addPortfolio(request, response);
-                break;
-            case "update":
-                updatePortfolio(request, response);
-                break;
-            case "list":
-            default:
-                listPortfolios(request, response);
-                break;
-        }
-    }
-        private void addPortfolio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            int userId = Integer.parseInt(request.getParameter("userId"));
-            int stockId = Integer.parseInt(request.getParameter("stockId"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            BigDecimal buyedPrice = new BigDecimal(request.getParameter("buyedPrice"));
-
-            Portfolio portfolio = new Portfolio();
-            portfolio.setUserId(userId);
-            portfolio.setStockId(stockId);
-            portfolio.setQuantity(quantity);
-            portfolio.setBuyedPrice(buyedPrice);
-
-            portfolioDAO.addPortfolio(portfolio);
-            response.sendRedirect("portfolio?action=list");
-        }
-
-        private void updatePortfolio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            int portfolioId = Integer.parseInt(request.getParameter("portfolioId"));
-            int userId = Integer.parseInt(request.getParameter("userId"));
-            int stockId = Integer.parseInt(request.getParameter("stockId"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            BigDecimal buyedPrice = new BigDecimal(request.getParameter("buyedPrice"));
-
-            Portfolio portfolio = new Portfolio();
-            portfolio.setPortfolioId(portfolioId);
-            portfolio.setUserId(userId);
-            portfolio.setStockId(stockId);
-            portfolio.setQuantity(quantity);
-            portfolio.setBuyedPrice(buyedPrice);
-
-            portfolioDAO.updatePortfolio(portfolio);
-            response.sendRedirect("portfolio?action=list");
-        }
-
-        private void deletePortfolio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            int portfolioId = Integer.parseInt(request.getParameter("portfolioId"));
-            portfolioDAO.deletePortfolio(portfolioId);
-            response.sendRedirect("portfolio?action=list");
-        }
 
         private void viewPortfolio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             int portfolioId = Integer.parseInt(request.getParameter("portfolioId"));

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.chainsys.model.*" %>
+<%@ page import="com.chainsys.dao.*" %>
+<%@ page import="com.chainsys.impl.*" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%
     if (session == null || session.getAttribute("user") == null) {
@@ -13,6 +15,8 @@
     response.setHeader("Expires", "0"); // Proxies
 
     User user = (User) session.getAttribute("user");
+    TransactionDAO transOP=new TransactionImpl();
+    
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -186,35 +190,73 @@
          <div style=" margin-top:5px">
          
          
-  <div class="card mt-2 mb-5 mb-lg-0  " style="height: 200px; overflow-y: auto;">
-   <p  class="mb-0 "style="padding-left: 16px; padding-top:15px;">orders</p>
-    <div class="card-body p-1">
-     
-      <div class="d-flex justify-content-between align-items-center p-3 ">
-        <p class="mb-0 ">company</p>
+  <div class="card mt-2 mb-5 mb-lg-0  " >
+  <div class="card-body">
+  <form action="transactions" method="post">
+    <input type="hidden" name="userId" value="<%= user.getId() %>">
+    <button type="submit" style="text-decoration:none; color: inherit; text-decoration: inherit; border: none; background: none; cursor: pointer;"><span class="text-primary font-italic me-1">Order</span> stock details</button>
+    </form>
+
+                  
+
+<div class="card-body p-1" style="height: 150px; overflow-y: auto;">
+    <%
+        List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
+    %>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <p class="mb-0">Company</p>
         <p class="mb-0">Quantity</p>
-        <p class="mb-0">total</p>
-        <p class="mb-0">type</p>
-      </div>
-      <div class="d-flex justify-content-between align-items-center p-3 ">
-        <p class="mb-0 ">Apple</p>
-        <p class="mb-0"> 1</p>
-        <p class="mb-0"> $<%= user.getBalance() %></p>
-        <p class="mb-1">buy</p>
-      </div>
-       <div class="d-flex justify-content-between align-items-center p-3 ">
-        <p class="mb-0 ">Apple</p>
-        <p class="mb-0"> 1</p>
-        <p class="mb-0"> $<%= user.getBalance() %></p>
-        <p class="mb-1">buy</p>
-      </div>
-       <div class="d-flex justify-content-between align-items-center p-3 ">
-        <p class="mb-0 ">Apple</p>
-        <p class="mb-0"> 1</p>
-        <p class="mb-0"> $<%= user.getBalance() %></p>
-        <p class="mb-1">buy</p>
-      </div>
+        <p class="mb-0">Total</p>
+        <p class="mb-0">Type</p>
     </div>
+    <% for (Transaction transaction : transList) { %>
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <p class="mb-0"><%= transaction.getCompanyName() %></p>
+            <p class="mb-0"><%= transaction.getShares() %></p>
+            <p class="mb-0">$<%= transaction.getPrice() %></p>
+            <p class="mb-1 btn <%= "buy".equals(transaction.getTransactionType()) ? "bg-success text-white" : "bg-danger text-white" %> rounded">
+                <%= transaction.getTransactionType() %>
+            </p>
+        </div>
+    <% } %>
+</div>
+
+  </div>
+  
+  </div>
+    <div class="card mt-2 mb-5 mb-lg-0  " >
+  <div class="card-body">
+  <form action="transactions" method="post">
+    <input type="hidden" name="userId" value="<%= user.getId() %>">
+    <button type="submit" style="text-decoration:none; color: inherit; text-decoration: inherit; border: none; background: none; cursor: pointer;"><span class="text-primary font-italic me-1">Order</span> stock details</button>
+    </form>
+
+                  
+
+<div class="card-body p-1" style="height: 150px; overflow-y: auto;">
+    <%
+/*         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
+ */    %>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <p class="mb-0">Company</p>
+        <p class="mb-0">Quantity</p>
+        <p class="mb-0">Total</p>
+        <p class="mb-0">Type</p>
+    </div>
+    <% for (Transaction transaction : transList) { %>
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <p class="mb-0"><%= transaction.getCompanyName() %></p>
+            <p class="mb-0"><%= transaction.getShares() %></p>
+            <p class="mb-0">$<%= transaction.getPrice() %></p>
+            <p class="mb-1 btn <%= "buy".equals(transaction.getTransactionType()) ? "bg-success text-white" : "bg-danger text-white" %> rounded">
+                <%= transaction.getTransactionType() %>
+            </p>
+        </div>
+    <% } %>
+</div>
+
+  </div>
+  
   </div>
 </div>
           
@@ -281,10 +323,12 @@
             <button id="btnOpenNomineeForm">Add Nominee</button>
           </p>
         </div>
+        <div class="card-body p-1 mb-2" style="height: 300px; overflow-y: auto;">
         <% List<Nominee> nominees = (List<Nominee>) request.getAttribute("listNominees");
         if (nominees != null) {
           for (Nominee nominee : nominees) { %>
-          <div class="row border mt-2 md-2 rounded ">
+          
+          <div class="row border   mt-2 md-2 mx-1 rounded  ">
             
               <div class="col-sm-4 mt-2 md-9">
                 <p class="mb-0">Name</p>
@@ -327,6 +371,7 @@
              </div>
           <% }
         } %>
+        </div>
         
       </div>
       
@@ -335,30 +380,56 @@
   </div>
     <div class="col-md-6">
               <div class="card mb-4 mb-md-0">
-                <div class="card-body">
-                <a href="StockServlet"style="text-decoration:none;  color: inherit;
-  text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Stock</span> Investment details
+                 <div class="card-body">
+                 
+                   <a href="StockServlet"style="text-decoration:none;  color: inherit;
+  text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Stock</span> details
                   </p></a>
-                  <p class="mb-1" style="font-size: .77rem;">Small cap</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Medium cap</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Large cap</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0"
-                      aria-valuemax="100"></div>
-                  </div>
-                  
-
-                </div>
+                        <p class="mb-1" style="font-size: .77rem;">Small cap</p>
+                        <div class="progress rounded" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="80%"></div>
+                        </div>
+                        <p class="mt-4 mb-1" style="font-size: .77rem;">Medium cap</p>
+                        <div class="progress rounded" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="72%"></div>
+                        </div>
+                        <p class="mt-4 mb-1" style="font-size: .77rem;">Large cap</p>
+                        <div class="progress rounded" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="89%"></div>
+                        </div>
+                    </div>
               </div>
+                       
+  <div class="card mt-2 mb-5 mb-lg-0  " >
+  <div class="card-body">
+  <a href="Portfolio"style="text-decoration:none;  color: inherit;
+  text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Portfolio</span> details
+                  </p></a>
+                   <%
+/*         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
+ */    %>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <p class="mb-0">stockId</p>
+        <p class="mb-0">Quantity</p>
+        <p class="mb-0">Total</p>
+        <p class="mb-0">Type</p>
+    </div>
+    <% for (Transaction transaction : transList) { %>
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <p class="mb-0"><%= transaction.getCompanyName() %></p>
+            <p class="mb-0"><%= transaction.getShares() %></p>
+            <p class="mb-0">$<%= transaction.getPrice() %></p>
+            <p class="mb-1 btn <%= "buy".equals(transaction.getTransactionType()) ? "bg-success text-white" : "bg-danger text-white" %> rounded">
+                <%= transaction.getTransactionType() %>
+            </p>
+        </div>
+    <% } %>
+                      
+  </div>
+  </div>
+              
             </div>
+            
 </div>
 
 
@@ -423,6 +494,14 @@
               <label for="amount">Amount:</label>
               <input type="number" id="amount" name="amount" class="form-control" required>
             </div>
+              <div class="form-group">
+                    <label for="paymentMethod">Payment Method:</label>
+                    <select id="paymentMethod" name="paymentMethod" class="form-control" required>
+                        <option value="card">Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
             <button type="submit">Add Money</button>
           </form>
         </div>
@@ -599,6 +678,7 @@ $(document).ready(function() {
     document.getElementById('btnCloseAddMoneyForm').addEventListener('click', function() {
       document.getElementById('addMoneyPopup').style.display = 'none';
     });
+    
  // Open Profile Picture Popup
     function openProfilePicturePopup() {
       var profilePicturePopup = document.getElementById("profilePicturePopup");
