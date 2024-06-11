@@ -31,6 +31,7 @@ public class PortfolioImpl implements PortfolioDAO {
                 portfolio.setUserId(resultSet.getInt("user_id"));
                 portfolio.setStockId(resultSet.getInt("stock_id"));
                 portfolio.setQuantity(resultSet.getInt("quantity"));
+                portfolio.setTotal(resultSet.getBigDecimal("total"));
                 portfolio.setBuyedPrice(resultSet.getBigDecimal("buyed_price"));
                 return portfolio;
             }

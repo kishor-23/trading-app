@@ -3,6 +3,8 @@
 <%@ page import="com.chainsys.model.*" %>
 <%@ page import="com.chainsys.dao.*" %>
 <%@ page import="com.chainsys.impl.*" %>
+<%@ page import="java.math.BigDecimal" %>
+
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%
     if (session == null || session.getAttribute("user") == null) {
@@ -407,21 +409,32 @@
                   </p></a>
                    <%
 /*         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
- */    %>
+                   
+ */ 
+ PortfolioDAO portfolioOperations=new PortfolioImpl();
+ List<Portfolio> portfoliolist=portfolioOperations.getPortfoliosByUserId(user.getId()); 
+ %>
     <div class="d-flex justify-content-between align-items-center p-3">
         <p class="mb-0">stockId</p>
         <p class="mb-0">Quantity</p>
-        <p class="mb-0">Total</p>
-        <p class="mb-0">Type</p>
+        <p class="mb-0">invested</p>
+        <p class="mb-0">total cost</p>
     </div>
-    <% for (Transaction transaction : transList) { %>
+    <% for (Portfolio portfolio : portfoliolist) { 
+    
+    %>
         <div class="d-flex justify-content-between align-items-center p-3">
-            <p class="mb-0"><%= transaction.getCompanyName() %></p>
-            <p class="mb-0"><%= transaction.getShares() %></p>
-            <p class="mb-0">$<%= transaction.getPrice() %></p>
-            <p class="mb-1 btn <%= "buy".equals(transaction.getTransactionType()) ? "bg-success text-white" : "bg-danger text-white" %> rounded">
-                <%= transaction.getTransactionType() %>
-            </p>
+            <p class="mb-0"><%= portfolio.getStockId()%></p>
+            <p class="mb-0"><%= portfolio.getQuantity() %></p>
+            <p class="mb-0"> <%= portfolio.getBuyedPrice() %></p>
+            <%
+    BigDecimal quantity = new BigDecimal(portfolio.getQuantity());
+    BigDecimal totalValue = quantity.multiply(portfolio.getBuyedPrice());
+%>
+             <p class="mb-0"> <%= totalValue %></p>
+            
+           
+            
         </div>
     <% } %>
                       

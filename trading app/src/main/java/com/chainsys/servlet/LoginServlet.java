@@ -5,9 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
+
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,7 @@ import com.chainsys.impl.NomineeImpl;
 import com.chainsys.impl.UserImpl;
 import com.chainsys.model.Nominee;
 import com.chainsys.model.User;
-import com.chainsys.util.PasswordHashing; // Import PasswordHashing class
+import com.chainsys.util.PasswordHashing; 
 
 
 @WebServlet("/LoginServlet")
