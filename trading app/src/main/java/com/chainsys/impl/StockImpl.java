@@ -107,7 +107,6 @@ public class StockImpl implements StockDAO {
 
             callableStatement.execute();
             result = callableStatement.getInt(5);
-            double profitLoss = callableStatement.getDouble(6);
             // Handle profitLoss if needed
         } catch (SQLException e) {
             e.printStackTrace();

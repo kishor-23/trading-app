@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.chainsys.model.*" %>
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html
+<html lang="en">
 <head>
     <title>Transactions</title>
-    <!-- Bootstrap CSS with Cosmo theme -->
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cosmo/bootstrap.min.css" rel="stylesheet">
-    <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css" rel="stylesheet">
+    <title>Transactions</title>
 </head>
 <body>
 <% 
@@ -29,7 +28,7 @@ User user = (User) session.getAttribute("user");
                     <th>Shares</th>
                     <th>Price</th>
                     <th>Type</th>
-                    <th>Timestamp</th>
+                    <th>Time stamp</th>
                     <th>Stock Symbol</th>
                     <th>Company Name</th>
                 </tr>

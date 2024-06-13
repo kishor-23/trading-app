@@ -11,8 +11,8 @@ public class Transaction {
     private BigDecimal price;
     private String transactionType;
     private Timestamp timestamp;
-    private String stockSymbol; // New field
-    private String companyName; // New field
+    private String stockSymbol; 
+    private String companyName; 
 
     // No-argument constructor
     public Transaction() {

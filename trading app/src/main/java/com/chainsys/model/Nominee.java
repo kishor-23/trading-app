@@ -4,16 +4,16 @@ public class Nominee {
     private int nomineeId;
     private String nomineeName;
     private String relationship;
-    private String Phoneno;
+    private String phoneno;
     private int userId;
 
 
 	public String getPhoneno() {
-		return Phoneno;
+		return phoneno;
 	}
 
 	public void setPhoneno(String phoneno) {
-		Phoneno = phoneno;
+		this.phoneno = phoneno;
 	}
 
 	// Constructors

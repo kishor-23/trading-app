@@ -1,7 +1,6 @@
 package com.chainsys.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,6 +23,9 @@ public class NomineeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private NomineeImpl nomineeImpl;
     private UserDAO userOperations;
+    private static final String LIST_ACTION_URL = "NomineeServlet?action=list";
+
+    @Override
     public void init() {
         try {
         	 userOperations = new UserImpl();
@@ -32,7 +34,7 @@ public class NomineeServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
+@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
@@ -54,21 +56,15 @@ public class NomineeServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
-
+@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
         try {
-            switch (action) {
-                case "list":
-                    listNominees(request, response);
-                    break;
-                case "get": // New case to get nominee details by ID
-//                    getNomineeById(request, response);
-                    break;
-                default:
-                    break;
-            }
+        	if ("list".equals(action)) {
+        	    listNominees(request, response);
+        	} 
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new ServletException(e);
         }
@@ -93,7 +89,7 @@ public class NomineeServlet extends HttpServlet {
 
 
 
-    private void addNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException, ClassNotFoundException {
+    private void addNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException,  ClassNotFoundException {
         String nomineeName = request.getParameter("name");
         String relationship = request.getParameter("relationship");
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -106,10 +102,10 @@ public class NomineeServlet extends HttpServlet {
         nominee.setPhoneno(phone);
 
         nomineeImpl.addNominee(nominee);
-        response.sendRedirect("NomineeServlet?action=list");
+        response.sendRedirect(LIST_ACTION_URL);
     }
 
-    private void updateNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException, ClassNotFoundException {
+    private void updateNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ClassNotFoundException {
         int nomineeId = Integer.parseInt(request.getParameter("nomineeId"));
         String nomineeName = request.getParameter("nomineeName");
         String relationship = request.getParameter("relationship");
@@ -123,13 +119,12 @@ public class NomineeServlet extends HttpServlet {
         nominee.setUserId(userId);
         nomineeImpl.updateNominee(nominee);
       
-        response.sendRedirect("NomineeServlet?action=list");
+        response.sendRedirect(LIST_ACTION_URL);
     }
 
-    private void deleteNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException, ClassNotFoundException {
+    private void deleteNominee(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ClassNotFoundException {
         int nomineeId = Integer.parseInt(request.getParameter("nomineeId"));
-        int userId = Integer.parseInt(request.getParameter("userId"));
         nomineeImpl.deleteNominee(nomineeId);
-        response.sendRedirect("NomineeServlet?action=list");
+        response.sendRedirect(LIST_ACTION_URL);
     }
 }

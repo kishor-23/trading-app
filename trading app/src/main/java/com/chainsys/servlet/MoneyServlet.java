@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.chainsys.impl.UserImpl;
-import com.chainsys.model.User;
+
 
 
 @WebServlet("/MoneyServlet")
 public class MoneyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserImpl userOperations;
+	private final UserImpl userOperations;
 
     public MoneyServlet() throws ClassNotFoundException, SQLException {
         super();
          userOperations = new UserImpl();
     }
 
-
+@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 int userId = Integer.parseInt(request.getParameter("userId"));
 	        double amount = Double.parseDouble(request.getParameter("amount"));

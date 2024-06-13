@@ -145,31 +145,31 @@
   <div class="row">
       <div class="col-lg-2 col-md-2 col-sm-6 mb-4 mx-2">
           <a class="item" href="/varsity/modules" style="background-color: #77B4F2">
-              <span><img src="assets/images/ico-modules.svg" alt="Modules" class=""></span>
+              <span><img src="assets/ico-modules.svg" alt="Modules" class=""></span>
               <strong>Modules</strong>
           </a>
       </div>
       <div class="col-lg-2 col-md-3 col-sm-6 mb-4 mx-2">
           <a class="item" href="https://varsitylive.zerodha.com" style="background-color: #F2C8CA">
-              <span><img src="assets/images/ico-blog.svg" alt="Live"></span>
+              <span><img src="assets/ico-blog.svg" alt="Live"></span>
               <strong>Blog</strong>
           </a>
       </div>
       <div class="col-lg-2 col-md-3 col-sm-6 mb-4 mx-2">
           <a class="item" href="/varsity/video-modules" style="background-color: #F0B32A">
-              <span><img src="assets/images/ico-videos.svg" alt="Videos"></span>
+              <span><img src="assets/ico-videos.svg" alt="Videos"></span>
               <strong>Videos</strong>
           </a>
       </div>
       <div class="col-lg-2 col-md-3 col-sm-6 mb-4 mx-2">
           <a class="item" href="#" style="background-color: #B6ADF4">
-              <span><img src="assets/images/ico-certified.svg" alt="Certified"></span>
+              <span><img src="assets/ico-certified.svg" alt="Certified"></span>
               <strong>Certified</strong>
           </a>
       </div>
       <div class="col-lg-2 col-md-3 col-sm-6 mb-4 mx-2">
           <a class="item" href="#" style="background-color: #A5CC65">
-              <span><img src="assets/images/ico-junior.svg" alt="Junior"></span>
+              <span><img src="assets/ico-junior.svg" alt="Junior"></span>
               <strong>Quiz</strong>
           </a>
       </div>
@@ -192,8 +192,6 @@
 
       <li> Gold and silver are relatively safer, but the historical return on such investment has not been very encouraging.</li>
     </ol>
-
-
 
   <p>  <p>You can download the <a href="https://zerodha.com/varsity/wp-content/uploads/2022/11/Module-1_Chapter-1_savings-comparision.xlsx">excel sheet</a> </p>
     </div>

@@ -18,9 +18,7 @@ public class TransactionImpl implements TransactionDAO {
             "FROM transactions t JOIN stocks s ON t.stock_id = s.stock_id " +
             "WHERE t.user_id = ?";
     
-    private static final String GET_ALL_TRANSACTIONS_QUERY =
-            "SELECT t.transaction_id, t.user_id, t.stock_id, t.shares, t.price, t.transaction_type, t.timestamp, s.symbol, s.company_name " +
-            "FROM transactions t JOIN stocks s ON t.stock_id = s.stock_id";
+
 
     private static final String GET_LAST_FIVE_TRANSACTIONS_BY_USER_ID_QUERY =
             "SELECT t.transaction_id, t.user_id, t.stock_id, t.shares, t.price, t.transaction_type, t.timestamp, s.symbol, s.company_name " +
@@ -59,30 +57,7 @@ public class TransactionImpl implements TransactionDAO {
         return transactions;
     }
 
-    @Override
-    public List<Transaction> getAllTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-        try (
-             PreparedStatement preparedStatement = con.prepareStatement(GET_ALL_TRANSACTIONS_QUERY);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                Transaction transaction = new Transaction();
-                transaction.setTransactionId(resultSet.getInt("transaction_id"));
-                transaction.setUserId(resultSet.getInt("user_id"));
-                transaction.setStockId(resultSet.getInt("stock_id"));
-                transaction.setShares(resultSet.getInt("shares"));
-                transaction.setPrice(resultSet.getBigDecimal("price"));
-                transaction.setTransactionType(resultSet.getString("transaction_type"));
-                transaction.setTimestamp(resultSet.getTimestamp("timestamp"));
-                transaction.setStockSymbol(resultSet.getString("symbol"));
-                transaction.setCompanyName(resultSet.getString("company_name"));
-                transactions.add(transaction);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return transactions;
-    }
+
     
     public List<Transaction> getLastFiveTransactionsByUserId(int userId) {
         List<Transaction> transactions = new ArrayList<>();

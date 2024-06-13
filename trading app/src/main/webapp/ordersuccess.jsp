@@ -98,11 +98,6 @@
         .orderSubDetail .code {
             margin-left: 12px;
         }
-        .qr-code {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         .orderContainer:hover {
             transform: scale(1.2);
         }
@@ -128,17 +123,12 @@
                         <%} %>
                         <div>Quantity: <%= quantity %></div>
                         <div class="code">Order Value: <%= price %></div>
-                  <!--       <div>NSE Order: ID1400000000012294</div> -->
                     </div>
-                    <div class="qr-code">
-                        <!-- Add QR code or any other images here if needed -->
-                    </div>
+           
                   
                     <div class="orderSubDetail ">
                     <% if (type != null && type.equals("buy")) { %>
-                    
-                        <!-- Additional order details can be added here -->
-                      <div class="d-flex align-items-center flex-column"><p class="mx-2"> order type: </p> <p class="btn btn-success"> Buy </p> </div>
+                        <div class="d-flex align-items-center flex-column"><p class="mx-2"> order type: </p> <p class="btn btn-success"> Buy </p> </div>
                      <%}else{
                     	 %>   
                       <div class="d-flex align-items-center flex-column"><p class="mx-2"> order type: </p> <p class="btn btn-danger"> sell </p> </div>

@@ -2,11 +2,12 @@ package com.chainsys.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+
 
 public class PasswordHashing {
     private static final String HASH_ALGORITHM = "SHA-256";
-
+    private PasswordHashing() {
+    }
     public static String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
@@ -27,6 +28,15 @@ public class PasswordHashing {
     }
 
     public static boolean checkPassword(String password, String hashedPassword) {
-        return hashPassword(password).equals(hashedPassword);
+        String hashedInputPassword = hashPassword(password);
+        // Check if hashedInputPassword is null
+        if (hashedInputPassword != null) {
+            return hashedInputPassword.equals(hashedPassword);
+        } else {
+            // Handle null case, such as logging an error or returning false
+            // For example:
+            return false;
+        }
     }
+
 }

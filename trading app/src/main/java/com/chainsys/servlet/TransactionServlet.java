@@ -15,11 +15,9 @@ import java.util.List;
 
 @WebServlet("/transactions")
 public class TransactionServlet extends HttpServlet {
-    /**
-	 * 
-	 */
+ 
 	private static final long serialVersionUID = 1L;
-	private TransactionDAO transactionDAO;
+	private  TransactionDAO transactionDAO;
 
     public TransactionServlet() throws ClassNotFoundException, SQLException {
         this.transactionDAO = new TransactionImpl();
@@ -27,14 +25,12 @@ public class TransactionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userIdParam = request.getParameter("userId");
-        List<Transaction> transactions;
+        List<Transaction> transactions=null;
 
         if (userIdParam != null) {
             int userId = Integer.parseInt(userIdParam);
             transactions = transactionDAO.getTransactionsByUserId(userId);
-        } else {
-            transactions = transactionDAO.getAllTransactions();
-        }
+        } 
 
         request.setAttribute("transactions", transactions);
         request.getRequestDispatcher("transactions.jsp").forward(request, response);

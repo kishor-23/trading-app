@@ -79,7 +79,6 @@
         </div>
     </div>
     
- <!--   <script src="script/login.js"></script>  -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const passwordInput = document.getElementById('password');

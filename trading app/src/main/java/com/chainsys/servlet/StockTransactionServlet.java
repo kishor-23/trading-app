@@ -1,8 +1,6 @@
 package com.chainsys.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +12,7 @@ import com.chainsys.impl.StockImpl;
 @WebServlet("/StockTransactionServlet")
 public class StockTransactionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private static final String TRANSACTION_TYPE = "transactionType";
     private StockImpl stockDAO;
 
     @Override
@@ -25,8 +24,8 @@ public class StockTransactionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String transactionType = request.getParameter("transactionType"); // Get the transaction type
-        System.out.println(transactionType);
+        String transactionType = request.getParameter(TRANSACTION_TYPE); // Get the transaction type
+    
         if ("buy".equalsIgnoreCase(transactionType)) {
             handleBuy(request, response);
         } else if ("sell".equalsIgnoreCase(transactionType)) {
@@ -38,25 +37,17 @@ public class StockTransactionServlet extends HttpServlet {
     }
 
     private void handleBuy(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String transactionType = request.getParameter("transactionType");
-        System.out.println(transactionType);
+            throws  IOException {
+        String transactionType = request.getParameter(TRANSACTION_TYPE);
+     
         int userId = Integer.parseInt(request.getParameter("userid"));
         int stockId = Integer.parseInt(request.getParameter("stockId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         double price = Double.parseDouble(request.getParameter("price"));
 
-        // Log input values for debugging
-        System.out.println("User ID: " + userId);
-        System.out.println("Stock ID: " + stockId);
-        System.out.println("Quantity: " + quantity);
-        System.out.println("Price: " + price);
 
         // Call the DAO to execute the buy transaction
         int result = stockDAO.buyStock(userId, stockId, quantity, price);
-
-        // Log the result for debugging
-        System.out.println("Result: " + result);
 
         if (result == 1) {
             // Redirect to success.jsp with URL parameters
@@ -66,27 +57,15 @@ public class StockTransactionServlet extends HttpServlet {
             response.sendRedirect("fail.jsp?error="+error);
         }
     }
-
     private void handleSell(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String transactionType = request.getParameter("transactionType");
+            throws  IOException {
+        String transactionType = request.getParameter(TRANSACTION_TYPE);
         int userId = Integer.parseInt(request.getParameter("userid"));
         int stockId = Integer.parseInt(request.getParameter("stockId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         double price = Double.parseDouble(request.getParameter("price"));
-
-        // Log input values for debugging
-        System.out.println("User ID: " + userId);
-        System.out.println("Stock ID: " + stockId);
-        System.out.println("Quantity: " + quantity);
-        System.out.println("Price: " + price);
-
         // Call the DAO to execute the sell transaction
         int result = stockDAO.sellStock(userId, stockId, quantity, price);
-
-        // Log the result for debugging
-        System.out.println("Result: " + result);
-
         if (result == 1) {
             // Redirect to success.jsp with URL parameters
             response.sendRedirect("ordersuccess.jsp?userid=" + userId + "&stockId=" + stockId + "&quantity=" + quantity + "&price=" + price+"&transactionType="+ transactionType);

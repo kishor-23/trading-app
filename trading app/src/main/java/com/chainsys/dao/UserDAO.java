@@ -10,6 +10,6 @@ public interface UserDAO {
 
 	User getUserByEmailAndPassword(String email, String password) throws SQLException, ClassNotFoundException;
 
-	boolean checkUserAleardyExists(String mailId) throws ClassNotFoundException, SQLException;
 	User  getUserByEmail(String email) throws ClassNotFoundException, SQLException;
+	 boolean checkUserAlreadyExists(String mailId) throws ClassNotFoundException, SQLException;
 }

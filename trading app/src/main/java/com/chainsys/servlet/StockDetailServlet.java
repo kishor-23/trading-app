@@ -19,13 +19,13 @@ public class StockDetailServlet extends HttpServlet {
         super();
     }
 
-
+@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request,response);
 	
 	}
 
-
+@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String symbol = request.getParameter("symbol");
 		  

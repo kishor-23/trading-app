@@ -55,7 +55,10 @@ body {
 	line-height: 1.5;
 	-webkit-font-smoothing: antialiased
 }
-
+.bdr {
+  border-radius: 6px;
+  overflow: hidden;
+}
 header[data-astro-cid-rafkve5z] {
 	display: flex;
 	width: 100%;
@@ -118,8 +121,8 @@ header[data-astro-cid-rafkve5z] {
                 </form>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="table-responsive rounded">
+            <table class="table table-hover ">
                 <thead>
                     <tr>
                         <th>Symbol</th>

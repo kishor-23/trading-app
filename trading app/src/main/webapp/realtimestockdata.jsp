@@ -108,7 +108,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const apiKey = 'FYSHYCN2RCIC5MYY';
+        const apiKey = 'JAID6NXIGQ4YRGLG';
         //const apiKey = 'L4XUJTOGC60BL9C8';
         const symbol = 'AAPL';
         const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=${apiKey}`;

@@ -181,12 +181,7 @@
                 <p class="mb-0">$ <%= user.getBalance() %></p>
                 <button id="btnOpenAddMoneyForm">Add Money</button>
               </div>
-              <!-- <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                <p class="mb-0">Invested</p>
-                <p class="mb-0">$ 500</p>
-                <button>Withdraw</button>
-              </div>
- -->            </div>
+            </div>
           </div>
           
          <div style=" margin-top:5px">
@@ -408,32 +403,27 @@
   text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Portfolio</span> details
                   </p></a>
                    <%
-/*         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
-                   
- */ 
+
  PortfolioDAO portfolioOperations=new PortfolioImpl();
  List<Portfolio> portfoliolist=portfolioOperations.getPortfoliosByUserId(user.getId()); 
  %>
     <div class="d-flex justify-content-between align-items-center p-3">
-        <p class="mb-0">stockId</p>
+       
+         <p class="mb-0">Symbol</p>
         <p class="mb-0">Quantity</p>
         <p class="mb-0">invested</p>
         <p class="mb-0">total cost</p>
+        
     </div>
     <% for (Portfolio portfolio : portfoliolist) { 
     
     %>
         <div class="d-flex justify-content-between align-items-center p-3">
-            <p class="mb-0"><%= portfolio.getStockId()%></p>
+          
+            <p class="mb-0"><%= portfolio.getSymbol()%></p>
             <p class="mb-0"><%= portfolio.getQuantity() %></p>
             <p class="mb-0"> <%= portfolio.getBuyedPrice() %></p>
-            <%
-    BigDecimal quantity = new BigDecimal(portfolio.getQuantity());
-    BigDecimal totalValue = quantity.multiply(portfolio.getBuyedPrice());
-%>
-             <p class="mb-0"> <%= totalValue %></p>
-            
-           
+            <p class="mb-0"> <%= portfolio.getTotal() %></p>
             
         </div>
     <% } %>
@@ -545,6 +535,7 @@
           <option value="Sibling">Sibling</option>
           <option value="Child">Child</option>
           <!-- Add more options as needed -->
+          
         </select>
       </div>
       <div class="form-group">

@@ -26,11 +26,13 @@
 	<classpathentry kind="lib" path="C:/Users/Kish3574/Downloads/activation-1.1.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Kish3574/Downloads/javax.mail.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>

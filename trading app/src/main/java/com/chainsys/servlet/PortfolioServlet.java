@@ -1,9 +1,7 @@
 package com.chainsys.servlet;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +15,9 @@ import com.chainsys.model.Portfolio;
 
 @WebServlet("/portfolio")
 public class PortfolioServlet extends HttpServlet {
-    private PortfolioDAO portfolioDAO;
+ 
+	private static final long serialVersionUID = 1L;
+	private PortfolioDAO portfolioDAO;
 
     @Override
     public void init() throws ServletException {
@@ -41,8 +41,9 @@ public class PortfolioServlet extends HttpServlet {
                 viewPortfolio(request, response);
                 break;
             case "list":
+            	
             default:
-                listPortfolios(request, response);
+              
                 break;
         }
     }
@@ -55,9 +56,5 @@ public class PortfolioServlet extends HttpServlet {
             request.getRequestDispatcher("/portfolio-view.jsp").forward(request, response);
         }
 
-        private void listPortfolios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            List<Portfolio> portfolios = portfolioDAO.getAllPortfolios();
-            request.setAttribute("portfolios", portfolios);
-            request.getRequestDispatcher("/portfolio-list.jsp").forward(request, response);
-        }
+    
     }

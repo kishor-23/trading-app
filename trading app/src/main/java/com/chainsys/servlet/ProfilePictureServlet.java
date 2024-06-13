@@ -22,35 +22,46 @@ import com.chainsys.util.DbConnection;
 @MultipartConfig
 public class ProfilePictureServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
-        
-        try (Connection conn =  DbConnection.getConnection();// Obtain your database connection here;
+
+        try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT profilePicture FROM users WHERE id = ?")) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 Blob blob = rs.getBlob("profilePicture");
                 InputStream inputStream = blob.getBinaryStream();
-                int fileLength = inputStream.available();
+
+                // Determine the size of the blob and initialize the byte array
+                int fileLength = (int) blob.length();
                 byte[] imageBytes = new byte[fileLength];
-                inputStream.read(imageBytes);
+                int bytesRead = 0;
+                int offset = 0;
+
+                // Read the entire input stream
+                while (offset < fileLength && (bytesRead = inputStream.read(imageBytes, offset, fileLength - offset)) != -1) {
+                    offset += bytesRead;
+                }
+
+                // Ensure all bytes are read
+                if (offset < fileLength) {
+                    throw new IOException("Could not read the entire file: only read " + offset + " bytes; expected " + fileLength + " bytes");
+                }
 
                 response.setContentType("image/jpeg");
-                ServletOutputStream outputStream = response.getOutputStream();
-                outputStream.write(imageBytes);
-                outputStream.close();
+                try (ServletOutputStream outputStream = response.getOutputStream()) {
+                    outputStream.write(imageBytes);
+                }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e1) {
-	
-			e1.printStackTrace();
-		}
+        }
     }
-    
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
         Blob profilePicture = null;
@@ -75,22 +86,16 @@ public class ProfilePictureServlet extends HttpServlet {
                     stmt.setInt(2, userId);
                     int rowsUpdated = stmt.executeUpdate();
                     if (rowsUpdated > 0) {
-//                        response.sendRedirect("profile.jsp?userId=" + userId);
+
                     	response.sendRedirect("NomineeServlet?action=list");
                         
                         
-                    } else {
-                        // Handle the case where no rows were updated
                     }
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // Handle the case where filePart is null
-        }
+            } 
+        } 
     }
 
 

@@ -1,22 +1,40 @@
 package com.chainsys.model;
 
-import java.math.BigDecimal;
+
 
 public class Portfolio {
     private int portfolioId;
     private int userId;
     private int stockId;
     private int quantity;
-    private BigDecimal total;
-    public BigDecimal getTotal() {
+    private double total;
+    private String symbol;
+    public String getSymbol() {
+		return symbol;
+	}
+
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	private String company;
+    public double getTotal() {
 		return total;
 	}
 
-	public void setTotal(BigDecimal total) {
+	public void setTotal(double total) {
 		this.total = total;
 	}
 
-	private BigDecimal buyedPrice;
+	private double buyedPrice;
 
     // Getters and Setters
     public int getPortfolioId() {
@@ -51,11 +69,11 @@ public class Portfolio {
         this.quantity = quantity;
     }
 
-    public BigDecimal getBuyedPrice() {
+    public double getBuyedPrice() {
         return buyedPrice;
     }
 
-    public void setBuyedPrice(BigDecimal buyedPrice) {
+    public void setBuyedPrice(double buyedPrice) {
         this.buyedPrice = buyedPrice;
     }
 
