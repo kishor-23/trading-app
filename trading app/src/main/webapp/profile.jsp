@@ -17,6 +17,8 @@
     response.setHeader("Expires", "0"); // Proxies
 
     User user = (User) session.getAttribute("user");
+
+    PortfolioDAO portfolioOperations=new PortfolioImpl();
     TransactionDAO transOP=new TransactionImpl();
     
 %>
@@ -196,7 +198,7 @@
 
                   
 
-<div class="card-body p-1" style="height: 150px; overflow-y: auto;">
+<div class="card-body p-1" style="height: 210px; overflow-y: auto;">
     <%
         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
     %>
@@ -221,40 +223,7 @@
   </div>
   
   </div>
-    <div class="card mt-2 mb-5 mb-lg-0  " >
-  <div class="card-body">
-  <form action="transactions" method="post">
-    <input type="hidden" name="userId" value="<%= user.getId() %>">
-    <button type="submit" style="text-decoration:none; color: inherit; text-decoration: inherit; border: none; background: none; cursor: pointer;"><span class="text-primary font-italic me-1">Order</span> stock details</button>
-    </form>
 
-                  
-
-<div class="card-body p-1" style="height: 150px; overflow-y: auto;">
-    <%
-/*         List<Transaction> transList = transOP.getLastFiveTransactionsByUserId(user.getId());
- */    %>
-    <div class="d-flex justify-content-between align-items-center p-3">
-        <p class="mb-0">Company</p>
-        <p class="mb-0">Quantity</p>
-        <p class="mb-0">Total</p>
-        <p class="mb-0">Type</p>
-    </div>
-    <% for (Transaction transaction : transList) { %>
-        <div class="d-flex justify-content-between align-items-center p-3">
-            <p class="mb-0"><%= transaction.getCompanyName() %></p>
-            <p class="mb-0"><%= transaction.getShares() %></p>
-            <p class="mb-0">$<%= transaction.getPrice() %></p>
-            <p class="mb-1 btn <%= "buy".equals(transaction.getTransactionType()) ? "bg-success text-white" : "bg-danger text-white" %> rounded">
-                <%= transaction.getTransactionType() %>
-            </p>
-        </div>
-    <% } %>
-</div>
-
-  </div>
-  
-  </div>
 </div>
           
           
@@ -378,6 +347,7 @@
     <div class="col-md-6">
               <div class="card mb-4 mb-md-0">
                  <div class="card-body">
+                
                  
                    <a href="StockServlet"style="text-decoration:none;  color: inherit;
   text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Stock</span> details
@@ -399,12 +369,11 @@
                        
   <div class="card mt-2 mb-5 mb-lg-0  " >
   <div class="card-body">
-  <a href="Portfolio"style="text-decoration:none;  color: inherit;
+  <a href="portfolio.jsp"style="text-decoration:none;  color: inherit;
   text-decoration: inherit;" >  <p class="mb-4"><span class="text-primary font-italic me-1" href="">Portfolio</span> details
                   </p></a>
                    <%
 
- PortfolioDAO portfolioOperations=new PortfolioImpl();
  List<Portfolio> portfoliolist=portfolioOperations.getPortfoliosByUserId(user.getId()); 
  %>
     <div class="d-flex justify-content-between align-items-center p-3">

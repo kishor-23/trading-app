@@ -55,7 +55,6 @@ public class UserImpl implements UserDAO {
 					user.setPancardno(rs.getString("pancardno"));
 					user.setPhone(rs.getString("phone"));
 					user.setDob(rs.getDate("dob"));
-					// Assuming profilePicture is a Blob
 					user.setProfilePicture(rs.getBlob("profilePicture"));
 					user.setBalance(rs.getDouble("balance"));
 					return user;
@@ -90,7 +89,6 @@ public class UserImpl implements UserDAO {
 					user.setPancardno(rs.getString("pancardno"));
 					user.setPhone(rs.getString("phone"));
 					user.setDob(rs.getDate("dob"));
-					// Assuming profilePicture is a Blob
 					user.setProfilePicture(rs.getBlob("profilePicture"));
 					user.setBalance(rs.getDouble("balance"));
 					user.setPassword(rs.getString("password"));
