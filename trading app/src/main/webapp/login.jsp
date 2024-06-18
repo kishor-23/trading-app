@@ -34,16 +34,13 @@
                 </div>
                <% 
         String msg = request.getParameter("msg");
-        if ("1".equals(msg)) {
+        if (msg!=null) {
         %>
-            <p class="error">Password not match.</p>
+            <p class="error"><%=msg %></p>
         <% 
-        } else if("2".equals(msg)){
+        } 
         	   %>	
-        	   <p class="error">user not found, please register</p>
-        <%
-        }
-        %>
+       
                 <div class="btn">
                     <button type="submit" name="login">Login</button>
                 </div>

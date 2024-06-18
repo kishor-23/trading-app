@@ -1,3 +1,56 @@
+
+--Trading app db
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    pancardno VARCHAR(10) NOT NULL,
+    phone VARCHAR(10) NOT NULL,
+    dob DATE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    profilePicture BLOB DEFAULT NULL,
+    balance DECIMAL(10, 2) NOT NULL 
+);
+CREATE TABLE Nominee (
+    nominee_id INT PRIMARY KEY AUTO_INCREMENT,
+    nominee_name VARCHAR(255) NOT NULL,
+    relationship ENUM('Spouse', 'Parent', 'Child', 'Sibling', 'Other'),
+    phone_no varchar(15),
+    user_id INT,
+    CONSTRAINT fk_nominee_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE stocks (
+    stock_id INT PRIMARY KEY AUTO_INCREMENT,
+    symbol VARCHAR(10) UNIQUE NOT NULL,
+    company_name VARCHAR(100) NOT NULL,
+    current_stock_price DECIMAL(15, 2) NOT NULL,
+    cap_category VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE portfolio (
+    portfolio_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    stock_id INT,
+    quantity INT NOT NULL,
+    buyed_price DECIMAL(15, 2) NOT NULL,
+    CONSTRAINT fk_portfolio_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_portfolio_stock FOREIGN KEY (stock_id) REFERENCES stocks(stock_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE transactions (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    stock_id INT,
+    shares INT NOT NULL,
+    price DECIMAL(15, 2) NOT NULL,
+    transaction_type ENUM('buy', 'sell') NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_transactions_stock FOREIGN KEY (stock_id) REFERENCES stocks(stock_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
 --buy stock procedure 
 
 
@@ -59,6 +112,7 @@ END //
 
 DELIMITER ;
 
+
 -- sell stock procedure 
 DELIMITER //
 
@@ -114,6 +168,7 @@ END //
 
 DELIMITER ;
 
+
 -- trigger to change stock price when buy or sell for simplicity when stock is buy it price will increase by 10 and decrease 10 if sell.
 
 DELIMITER //
@@ -137,5 +192,29 @@ BEGIN
 END //
 
 DELIMITER ;
+
+--investment details of user by cap_category
+SELECT p.portfolio_id, p.user_id, p.stock_id,s.cap_category, s.company_name, s.symbol, p.quantity, p.avg_cost, p.total_cost
+FROM 
+    portfolio p
+JOIN 
+    stocks s 
+ON 
+    p.stock_id = s.stock_id
+WHERE p.user_id = 2;
+SELECT 
+    s.cap_category,
+    SUM(p.quantity) AS total_quantity,
+    (SELECT SUM(quantity) 
+     FROM portfolio 
+     WHERE user_id = 2) AS user_total_quantity
+FROM 
+    portfolio p
+JOIN 
+    stocks s ON p.stock_id = s.stock_id
+WHERE 
+    p.user_id = 19
+GROUP BY 
+    s.cap_category;
 
 

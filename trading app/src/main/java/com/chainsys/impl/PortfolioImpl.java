@@ -46,6 +46,7 @@ public class PortfolioImpl implements PortfolioDAO {
         }
         return portfolios;
     }
+    @Override
     public List<CategoryQuantity> getTotalQuantityByCapCategory(int userId) {
         List<CategoryQuantity> categoryQuantities = new ArrayList<>();
         String query = "SELECT s.cap_category, SUM(p.quantity) AS total_quantity, " +

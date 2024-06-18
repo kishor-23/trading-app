@@ -101,14 +101,14 @@
         .orderContainer:hover {
             transform: scale(1.2);
         }
-        @keyframes bouncingCard {
+  /*       @keyframes bouncingCard {
             from { transform: translateY(0);}
             to {transform: translateY(-18px);}
         }
         @keyframes bouncingShadow {
             from { transform: translateY(0px);}
             to {transform: translateY(4px);}
-        }
+        } */
     </style>
    
     <div class="<%= boxClass %>">

@@ -56,7 +56,11 @@
                 <div id="dobError" style="color: red; display: none;">You must be at least 18 years old.</div>
                 <label class="textlabel" for="password">Password</label>
                 <div class="password">
-                    <input type="password" name="password" id="password" required/>
+                <input type="password" id="password" name="password" 
+               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#@$!%*?&])[A-Za-z\d@$!#%*?&]{6,}" 
+               title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and be at least 6 characters long."
+               required>
+               
                     <i class="uil uil-eye-slash showHidePw" id="showpassword"></i>
                 </div>
                 <label class="textlabel" for="file-upload">Upload profile picture</label>
