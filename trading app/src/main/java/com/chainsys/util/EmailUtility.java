@@ -14,7 +14,7 @@ public class EmailUtility {
     }
     public static void sendEmail(String toEmail, String subject,String name) throws MessagingException {
         String fromEmail = "kishorkishor2003@gmail.com"; // Replace with your email
-        String password = "aclsxrczqgzpuqjr"; // Replace with your email password
+        String password = System.getenv("MAIL_APP_CODE"); // Replace with your email password
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); // SMTP server

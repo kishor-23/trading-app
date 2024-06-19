@@ -13,6 +13,11 @@ import com.chainsys.impl.StockImpl;
 public class StockTransactionServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final String TRANSACTION_TYPE = "transactionType";
+    private static final String ERROR_MESSAGE = "error";
+    private static final String ERROR_FILE = "fail.jsp";
+
+    
+
     private StockImpl stockDAO;
 
     @Override
@@ -25,40 +30,41 @@ public class StockTransactionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String transactionType = request.getParameter(TRANSACTION_TYPE); // Get the transaction type
-    
+
         if ("buy".equalsIgnoreCase(transactionType)) {
             handleBuy(request, response);
         } else if ("sell".equalsIgnoreCase(transactionType)) {
             handleSell(request, response);
         } else {
             // Invalid transaction type
-            response.sendRedirect("invalidTransaction.jsp");
+            request.setAttribute(ERROR_MESSAGE, "Invalid transaction type");
+            request.getRequestDispatcher(ERROR_FILE).forward(request, response);
         }
     }
 
     private void handleBuy(HttpServletRequest request, HttpServletResponse response)
-            throws  IOException {
+            throws IOException, ServletException {
         String transactionType = request.getParameter(TRANSACTION_TYPE);
-     
+
         int userId = Integer.parseInt(request.getParameter("userid"));
         int stockId = Integer.parseInt(request.getParameter("stockId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         double price = Double.parseDouble(request.getParameter("price"));
-
 
         // Call the DAO to execute the buy transaction
         int result = stockDAO.buyStock(userId, stockId, quantity, price);
 
         if (result == 1) {
             // Redirect to success.jsp with URL parameters
-            response.sendRedirect("ordersuccess.jsp?userid=" + userId + "&stockId=" + stockId + "&quantity=" + quantity + "&price=" + price+"&transactionType="+ transactionType);
+            response.sendRedirect("ordersuccess.jsp?userid=" + userId + "&stockId=" + stockId + "&quantity=" + quantity + "&price=" + price + "&transactionType=" + transactionType);
         } else {
-        	String error="insufficientBalance";
-            response.sendRedirect("fail.jsp?error="+error);
+            request.setAttribute(ERROR_MESSAGE, "insufficientBalance");
+            request.getRequestDispatcher(ERROR_FILE).forward(request, response);
         }
     }
+
     private void handleSell(HttpServletRequest request, HttpServletResponse response)
-            throws  IOException {
+            throws IOException, ServletException {
         String transactionType = request.getParameter(TRANSACTION_TYPE);
         int userId = Integer.parseInt(request.getParameter("userid"));
         int stockId = Integer.parseInt(request.getParameter("stockId"));
@@ -68,10 +74,10 @@ public class StockTransactionServlet extends HttpServlet {
         int result = stockDAO.sellStock(userId, stockId, quantity, price);
         if (result == 1) {
             // Redirect to success.jsp with URL parameters
-            response.sendRedirect("ordersuccess.jsp?userid=" + userId + "&stockId=" + stockId + "&quantity=" + quantity + "&price=" + price+"&transactionType="+ transactionType);
+            response.sendRedirect("ordersuccess.jsp?userid=" + userId + "&stockId=" + stockId + "&quantity=" + quantity + "&price=" + price + "&transactionType=" + transactionType);
         } else {
-            response.sendRedirect("fail.jsp");
+            request.setAttribute(ERROR_MESSAGE, "you don't have that stock to sell");
+            request.getRequestDispatcher(ERROR_FILE).forward(request, response);
         }
     }
-
 }
