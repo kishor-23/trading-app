@@ -14,7 +14,7 @@ import java.util.List;
 public class TransactionImpl implements TransactionDAO {
 
     private static final String GET_TRANSACTIONS_BY_USER_ID_QUERY =
-            "SELECT t.transaction_id, t.user_id, t.stock_id, t.shares, t.price, t.transaction_type, t.timestamp, s.symbol, s.company_name " +
+            "SELECT t.transaction_id, t.user_id, t.stock_id,t.profit_loss, t.shares, t.price, t.transaction_type, t.timestamp, s.symbol, s.company_name " +
             "FROM transactions t JOIN stocks s ON t.stock_id = s.stock_id " +
             "WHERE t.user_id = ?";
     
@@ -48,6 +48,7 @@ public class TransactionImpl implements TransactionDAO {
                     transaction.setTimestamp(resultSet.getTimestamp("timestamp"));
                     transaction.setStockSymbol(resultSet.getString("symbol"));
                     transaction.setCompanyName(resultSet.getString("company_name"));
+                    transaction.setProfitOrLoss(resultSet.getDouble("profit_loss"));
                     transactions.add(transaction);
                 }
             }

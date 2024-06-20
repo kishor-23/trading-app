@@ -12,13 +12,22 @@ public class Transaction {
     private String transactionType;
     private Timestamp timestamp;
     private String stockSymbol; 
-    private String companyName; 
+    private String companyName;
+    private double profitOrLoss;
 
     // No-argument constructor
     public Transaction() {
     }
 
-    // Parameterized constructor
+    public double getProfitOrLoss() {
+		return profitOrLoss;
+	}
+
+	public void setProfitOrLoss(double profitOrLoss) {
+		this.profitOrLoss = profitOrLoss;
+	}
+
+	// Parameterized constructor
     public Transaction(int transactionId, int userId, int stockId, int shares, BigDecimal price, String transactionType, Timestamp timestamp, String stockSymbol, String companyName) {
         this.transactionId = transactionId;
         this.userId = userId;

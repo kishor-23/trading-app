@@ -31,6 +31,7 @@ User user = (User) session.getAttribute("user");
                     <th>Time stamp</th>
                     <th>Stock Symbol</th>
                     <th>Company Name</th>
+                    <th>profit/loss</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +50,7 @@ User user = (User) session.getAttribute("user");
                                 <td><%= transaction.getTimestamp() %></td>
                                 <td><%= transaction.getStockSymbol() %></td>
                                 <td><%= transaction.getCompanyName() %></td>
+                                 <td><%= transaction.getProfitOrLoss() %></td>
                             </tr>
                 <%
                         }

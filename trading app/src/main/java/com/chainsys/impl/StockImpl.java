@@ -115,4 +115,24 @@ public class StockImpl implements StockDAO {
 
         return result;
     }
+    public double stockPriceById(int stockId) {
+        String stockpricesql = "SELECT  current_stock_price FROM stocks where stock_id=? ";
+          
+        try (PreparedStatement pstmt = con.prepareStatement(stockpricesql)) {
+            pstmt.setInt(1, stockId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                  
+             
+               
+                    return  rs.getDouble("current_stock_price");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception appropriately
+        }
+        return 0;
+    }
 }
